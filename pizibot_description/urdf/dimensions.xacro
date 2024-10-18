@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- PROPERTY -->
+    <xacro:property name="robot_diameter" value="0.300" />
+    <xacro:property name="robot_height" value="0.108" />
+    <xacro:property name="robot_mass" value="1" />
+
+    <xacro:property name="wheel_width" value="0.027" />
+    <xacro:property name="wheel_diameter" value="0.08" />
+    <xacro:property name="wheel_mass" value="0.1" />
+
+    <xacro:property name="ground_clearance" value="0.018" />
+
+    <xacro:property name="caster_wheel_distance" value="0.120" />
+    <xacro:property name="caster_wheel_diameter" value="${ground_clearance*2}" />
+    <xacro:property name="caster_wheel_mass" value="0.1" />
+
+</robot>
