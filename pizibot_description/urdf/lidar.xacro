@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <joint name="$(arg prefix)laser_joint" type="fixed">
+        <parent link="$(arg prefix)chassis"/>
+        <child link="$(arg prefix)laser_frame"/>
+        <origin xyz="0 -${lidar_distance} ${robot_height+lidar_length}" rpy="0 0 ${3*pi/2}"/>
+    </joint>
+
+    <link name="$(arg prefix)laser_frame">
+        <visual>
+            <origin xyz="0 0 -${lidar_origin_height_offset}" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://pizibot_description/meshes/lidar_with_support.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 -${lidar_length/2}" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="${lidar_diameter/2}" length="${lidar_length}"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_cylinder mass="${lidar_mass}" length="${lidar_length}" radius="${lidar_diameter/2}">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+
+     <!-- Gazebo specific settings for the lidar -->
+    <gazebo reference="$(arg prefix)laser_frame">
+        <material>Gazebo/Black</material> 
+
+        <sensor name="laser" type="ray">
+            <pose>0 0 0 0 0 0</pose>        <!-- Position and orientation of the sensor -->
+            <visualize>false</visualize>    <!-- Set to true to visualize the lidar in Gazebo -->
+            <update_rate>10</update_rate> 
+            <ray>
+                <scan>
+                    <horizontal>
+                        <samples>360</samples>         
+                        <min_angle>-3.14</min_angle>  
+                        <max_angle>3.14</max_angle>
+                    </horizontal>
+                </scan>
+                <range>
+                    <min>0.15</min>                   
+                    <max>12.0</max>                  
+                </range>
+            </ray>
+            <plugin name="laser_controller" filename="libgazebo_ros_ray_sensor.so"> <!-- Plugin for ROS integration -->
+                <ros>
+                    <argument>~/out:=scan</argument> <!-- ROS topic for lidar output -->
+                </ros>
+                <output_type>sensor_msgs/LaserScan</output_type> <!-- Type of output message -->
+                <frame_name>laser_frame</frame_name>               <!-- Frame name for the sensor -->
+            </plugin>
+        </sensor>
+    </gazebo>
+
+</robot>

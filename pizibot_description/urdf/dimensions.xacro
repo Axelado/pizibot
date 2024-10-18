@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-    <!-- PROPERTY -->
+    <!-- Robot property -->
     <xacro:property name="robot_diameter" value="0.300" />
     <xacro:property name="robot_height" value="0.108" />
     <xacro:property name="robot_mass" value="1" />
@@ -15,5 +15,14 @@
     <xacro:property name="caster_wheel_distance" value="0.120" />
     <xacro:property name="caster_wheel_diameter" value="${ground_clearance*2}" />
     <xacro:property name="caster_wheel_mass" value="0.1" />
+
+    <!-- RPLIDAR A1M8 properties -->
+    <xacro:property name="lidar_distance" value="0.084" /> <!-- Distance from chassis origin to lidar origin on X axis -->
+    <xacro:property name="lidar_diameter" value="0.098" />   <!-- support_lidar length  -->
+    <xacro:property name="lidar_length" value="0.062" /> <!-- lidar height + lidar support height -->
+    <xacro:property name="lidar_height" value="0.115" />
+    <xacro:property name="lidar_origin_height_offset" value="0.007" /> <!-- the frame origin is at 7 mm from the top of the lidar -->
+    <xacro:property name="lidar_mass" value="0.3" />
+    
 
 </robot>

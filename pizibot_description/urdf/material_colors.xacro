@@ -21,4 +21,12 @@
         <color rgba="0 0 0 1"/>
     </material>
 
+    <material name="gray">
+        <color rgba="0.5 0.5 0.5 1"/>
+    </material>
+
+    <material name="light_blue">
+        <color rgba="0.678 0.847 0.902 1"/>
+    </material>
+
 </robot>

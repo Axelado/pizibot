@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="pizibot">
-    
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pizibot">
+
     <xacro:arg name="prefix" default=""/>
 
     <xacro:include filename="material_colors.xacro" />
     <xacro:include filename="inertial_macros.xacro" />
     <xacro:include filename="dimensions.xacro" />
     <xacro:include filename="pizibot_macro.xacro" />
+    <xacro:include filename="lidar.xacro" />
 
     <xacro:pizibot prefix="$(arg prefix)"/>
     

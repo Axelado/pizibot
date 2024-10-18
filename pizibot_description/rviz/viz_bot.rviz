@@ -66,7 +66,7 @@ Visualization Manager:
         pizibot_front_caster_wheel:
           Value: false
         pizibot_laser_frame:
-          Value: false
+          Value: true
         pizibot_left_wheel:
           Value: true
         pizibot_right_wheel:
@@ -203,7 +203,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 0.9264857769012451
+      Distance: 0.6313741207122803
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -218,10 +218,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5797969102859497
+      Pitch: 0.3397972285747528
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 6.166782855987549
+      Yaw: 4.451781749725342
     Saved: ~
 Window Geometry:
   Displays:
