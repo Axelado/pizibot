@@ -11,7 +11,7 @@
         <visual>
             <origin xyz="0 0 -${lidar_origin_height_offset}" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://pizibot_description/meshes/lidar_with_support.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="file://$(find pizibot_description)/meshes/lidar_with_support.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="gray"/>
         </visual>

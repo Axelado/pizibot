@@ -25,14 +25,14 @@
         <link name="${prefix}chassis">
             <visual>
                 <geometry>
-                    <mesh filename="package://pizibot_description/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="file://$(find pizibot_description)/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="white"/>
             </visual>
 
             <collision>
                 <geometry>
-                    <mesh filename="package://pizibot_description/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="file://$(find pizibot_description)/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
             </collision>
 
@@ -56,7 +56,7 @@
         <link name="${prefix}left_wheel">
             <visual>
                 <geometry>
-                    <mesh filename="package://pizibot_description/meshes/left_wheel.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="file://$(find pizibot_description)/meshes/left_wheel.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="red"/>
             </visual>
@@ -88,7 +88,7 @@
         <link name="${prefix}right_wheel">
             <visual>
                 <geometry>
-                    <mesh filename="package://pizibot_description/meshes/right_wheel.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="file://$(find pizibot_description)/meshes/right_wheel.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="red"/>
             </visual>
