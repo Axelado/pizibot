@@ -22,7 +22,7 @@
     <xacro:property name="lidar_length" value="0.062" /> <!-- lidar height + lidar support height -->
     <xacro:property name="lidar_height" value="0.115" />
     <xacro:property name="lidar_origin_height_offset" value="0.007" /> <!-- the frame origin is at 7 mm from the top of the lidar -->
-    <xacro:property name="lidar_mass" value="0.3" />
+    <xacro:property name="lidar_mass" value="0.0" />  <!-- 0 because his mass is include in the robot mass -->
     
 
 </robot>

@@ -2,6 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pizibot">
 
     <xacro:arg name="prefix" default=""/>
+    <xacro:arg name="sim_mode" default="false"/>
 
     <xacro:include filename="material_colors.xacro" />
     <xacro:include filename="inertial_macros.xacro" />

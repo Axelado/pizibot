@@ -4,7 +4,7 @@
     <joint name="$(arg prefix)laser_joint" type="fixed">
         <parent link="$(arg prefix)chassis"/>
         <child link="$(arg prefix)laser_frame"/>
-        <origin xyz="0 -${lidar_distance} ${robot_height+lidar_length}" rpy="0 0 ${3*pi/2}"/>
+        <origin xyz="0 ${lidar_distance} ${robot_height+lidar_length}" rpy="0 0 ${3*pi/2}"/>
     </joint>
 
     <link name="$(arg prefix)laser_frame">
@@ -52,7 +52,7 @@
                     <argument>~/out:=scan</argument> <!-- ROS topic for lidar output -->
                 </ros>
                 <output_type>sensor_msgs/LaserScan</output_type> <!-- Type of output message -->
-                <frame_name>laser_frame</frame_name>               <!-- Frame name for the sensor -->
+                <frame_name>$(arg prefix)laser_frame</frame_name>               <!-- Frame name for the sensor -->
             </plugin>
         </sensor>
     </gazebo>

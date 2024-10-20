@@ -28,7 +28,7 @@ def generate_launch_description():
     xacro_file = os.path.join(pkg_path, 'urdf', 'pizibot.urdf.xacro')
 
     # Generate the robot description using xacro and the prefix argument
-    robot_description_config = Command(['xacro ', xacro_file, ' prefix:=' , prefix])
+    robot_description_config = Command(['xacro ', xacro_file, ' prefix:=' , prefix, ' sim_mode:=', use_sim_time])
     
     params = {'robot_description': robot_description_config, 'use_sim_time': use_sim_time}
     node_robot_state_publisher = Node(

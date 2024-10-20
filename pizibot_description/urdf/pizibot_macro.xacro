@@ -19,11 +19,12 @@
         <joint name="${prefix}chassis_joint" type="fixed">
             <parent link="${prefix}base_link"/>
             <child link="${prefix}chassis"/>
-            <origin xyz="0 0 0" rpy="0 0 ${pi/2}"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
         </joint>
 
         <link name="${prefix}chassis">
             <visual>
+                <origin xyz="0 0 0" rpy="0 0 ${pi}"/>
                 <geometry>
                     <mesh filename="file://$(find pizibot_description)/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
@@ -31,8 +32,9 @@
             </visual>
 
             <collision>
+                <origin xyz="0 0 ${robot_height/2}" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find pizibot_description)/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
+                    <cylinder length="${robot_height}" radius="${robot_diameter/2}" />
                 </geometry>
             </collision>
 
@@ -49,12 +51,13 @@
         <joint name="${prefix}left_wheel_joint" type="continuous">
             <parent link="${prefix}chassis"/>
             <child link="${prefix}left_wheel"/>
-            <origin xyz="${-((robot_diameter/2)-(wheel_width/2))} 0 ${ground_clearance}" rpy="-${pi/2} 0 -${pi/2}"/>
+            <origin xyz="${-((robot_diameter/2)-(wheel_width/2))} 0 ${ground_clearance}" rpy="-${pi/2} 0 ${pi/2}"/>
             <axis xyz="0 0 1"/>
         </joint>
 
         <link name="${prefix}left_wheel">
             <visual>
+                <origin xyz="0 0 0" rpy="0 ${pi} 0"/>
                 <geometry>
                     <mesh filename="file://$(find pizibot_description)/meshes/left_wheel.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
