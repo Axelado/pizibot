@@ -9,6 +9,7 @@
     <xacro:include filename="dimensions.xacro" />
     <xacro:include filename="pizibot_macro.xacro" />
     <xacro:include filename="lidar.xacro" />
+    <xacro:include filename="ros2_control.xacro" />
 
     <xacro:pizibot prefix="$(arg prefix)"/>
     
