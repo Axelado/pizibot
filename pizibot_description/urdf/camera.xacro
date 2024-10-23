@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <joint name="$(arg prefix)camera_support_joint" type="fixed">
+        <parent link="$(arg prefix)chassis"/>
+        <child link="$(arg prefix)camera_support_link"/>
+        <origin xyz="0 0 0" rpy="0 0 ${pi}"/>
+    </joint>
+
+    <link name="$(arg prefix)camera_support_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="file://$(find pizibot_description)/meshes/camera_support.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="file://$(find pizibot_description)/meshes/camera_support.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="$(arg prefix)camera_joint" type="fixed">
+        <parent link="$(arg prefix)chassis"/>
+        <child link="$(arg prefix)camera_link"/>
+        <origin xyz="0 ${camera_distance} ${camera_base_height}" rpy="0 0 ${pi/2}"/>
+    </joint>
+
+    <link name="$(arg prefix)camera_link">
+        <visual>
+            <origin xyz="-0.009 0 -0.011" rpy="${pi/2} 0 ${pi/2}"/> <!-- Value to align the camera visual in the correct direction and set the origin at the lens -->
+            <geometry>
+                <mesh filename="file://$(find pizibot_description)/meshes/esp_cam.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="red"/>
+        </visual>
+            <!-- No collision as the camera is inside the support -->        
+    </link>
+
+    <joint name="$(arg prefix)camera_optical_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
+        <parent link="$(arg prefix)camera_link" />
+        <child link="$(arg prefix)camera_link_optical" />
+    </joint>
+
+    <link name="$(arg prefix)camera_link_optical"></link>
+
+    <gazebo reference="$(arg prefix)camera_link">
+        <material>Gazebo/Red</material>
+        <sensor name="$(arg prefix)camera" type="camera">
+            <pose> 0 0 0 0 0 0 </pose>
+            <visualize>true</visualize>
+            <update_rate>15</update_rate> <!-- Max frame rate at full resolution -->
+            <camera>
+                <horizontal_fov>1.089</horizontal_fov>
+                <image>
+                    <format>RGB8</format>
+                    <width>1600</width> <!-- UXGA resolution -->
+                    <height>1200</height>
+                </image>
+                <clip>
+                    <near>0.05</near>
+                    <far>8.0</far>
+                </clip>
+            </camera>
+            <plugin name="$(arg prefix)camera_controller" filename="libgazebo_ros_camera.so">
+                <frame_name>$(arg prefix)camera_link_optical</frame_name>
+            </plugin>
+        </sensor>
+    </gazebo>
+
+</robot>
