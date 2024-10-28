@@ -1,0 +1,5 @@
+custom_twist_mux:
+  ros__parameters:
+    sources: ['cmd_vel', 'cmd_vel_joy', 'cmd_vel_tracker', cmd_vel_key]
+    priorities: [3, 1, 4, 2]
+    cmd_vel_out : 'diff_cont/cmd_vel_unstamped'

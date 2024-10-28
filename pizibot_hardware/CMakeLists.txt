@@ -30,4 +30,9 @@ install(TARGETS battery_management_node
 install(DIRECTORY include/
         DESTINATION include/${PROJECT_NAME})
 
+install(
+  DIRECTORY param launch
+  DESTINATION share/${PROJECT_NAME}
+)
+
 ament_package()
