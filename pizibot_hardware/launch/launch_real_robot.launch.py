@@ -3,14 +3,12 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, IncludeLaunchDescription, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
-from launch.substitutions import Command
-from launch.actions import IncludeLaunchDescription, TimerAction
+from launch.substitutions import Command, LaunchConfiguration
 from launch.actions import RegisterEventHandler
 from launch.event_handlers import OnProcessStart
-
 
 def generate_launch_description():
 
@@ -31,16 +29,28 @@ def generate_launch_description():
     
     robot_description = Command(['ros2 param get --hide-type /robot_state_publisher robot_description'])
 
-    controller_params = os.path.join(pkg_path, 'param', 'robot_controllers.yaml')
 
+    prefix_arg = DeclareLaunchArgument(
+        'prefix',
+        default_value='pizibot_',
+        description='Prefix used to identify a robot when multiple instances of the same robot are present'
+    )
+    prefix = LaunchConfiguration('prefix')
+    
+    controller_params = os.path.join(pkg_path, 'param', 'robot_controllers.yaml')
+    controllers_param_modifer = Node(package=package_name, executable='yaml_modifier_node',
+                        parameters=[{'file_path': controller_params},
+                                    {'prefix': prefix}],
+                        output='screen')
+    
+    controller_params_generated = os.path.join(pkg_path, 'param', 'robot_controllers_generated.yaml')
     controller_manager = Node(
         package='controller_manager',
         executable='ros2_control_node',
         parameters=[{'robot_description': robot_description},
-                controller_params],
+                controller_params_generated],
         )  
     delayed_controller_manager = TimerAction(period=3.0,actions=[controller_manager])
-
 
     diff_drive_spawner = Node(
         package="controller_manager",
@@ -75,6 +85,8 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        prefix_arg,
+        controllers_param_modifer,
         twist_mux,
         rsp,
         delayed_controller_manager,
