@@ -39,7 +39,41 @@
 
     <!-- Real hardware control block -->
     <xacro:unless value="$(arg sim_mode)">
-        <!-- TODO -->
-    </xacro:unless>
+        <ros2_control name="RealRobot" type="system">
+            <hardware>
+                <plugin>diffdrive_arduino/DiffDriveArduinoHardware</plugin>
+                <param name="left_wheel_name">left_wheel_joint</param>
+                <param name="right_wheel_name">right_wheel_joint</param>
+                <param name="loop_rate">30</param>
+                <param name="device">/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.2:1.0-port0</param>
+                <param name="baud_rate">115200</param>
+                <param name="timeout_ms">1000</param>
+                <param name="enc_counts_per_rev_left">1320</param>
+                <param name="enc_counts_per_rev_right">1320</param>
+                <param name="pid_p">30</param>
+                <param name="pid_d">10</param>
+                <param name="pid_i">0</param>
+                <param name="pid_o">50</param>
+            </hardware>
+            
+            <joint name="left_wheel_joint">
+                <command_interface name="velocity">
+                    <param name="min">-${max_wheel_velocity}</param>
+                    <param name="max">${max_wheel_velocity}</param>
+                </command_interface>
+                <state_interface name="position" />
+                <state_interface name="velocity" />
+            </joint>
+
+            <joint name="right_wheel_joint">
+                <command_interface name="velocity">
+                    <param name="min">-${max_wheel_velocity}</param>
+                    <param name="max">${max_wheel_velocity}</param>
+                </command_interface>
+                <state_interface name="position" />
+                <state_interface name="velocity" />
+            </joint>
+        </ros2_control>
+     </xacro:unless>
 
 </robot>
