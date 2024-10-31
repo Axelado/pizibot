@@ -11,7 +11,12 @@
         <visual>
             <origin xyz="0 0 -${lidar_origin_height_offset}" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="file://$(find pizibot_description)/meshes/lidar_with_support.stl" scale="0.001 0.001 0.001"/>
+                <xacro:if value="$(arg sim_mode)">
+                    <mesh filename="file://$(find pizibot_description)/meshes/lidar_with_support.stl" scale="0.001 0.001 0.001"/>
+                </xacro:if >
+                <xacro:unless value="$(arg sim_mode)">
+                    <!-- TODO -->
+                </xacro:unless>
             </geometry>
             <material name="gray"/>
         </visual>
@@ -26,33 +31,33 @@
         </xacro:inertial_cylinder>
     </link>
 
-     <!-- Gazebo specific settings for the lidar -->
+    <!-- Gazebo specific settings for the lidar -->
     <gazebo reference="$(arg prefix)laser_frame">
-        <material>Gazebo/Black</material> 
+        <material>Gazebo/Black</material>
 
         <sensor name="$(arg prefix)laser" type="ray">
-            <pose>0 0 0 0 0 0</pose>        <!-- Position and orientation of the sensor -->
-            <visualize>false</visualize>    <!-- Set to true to visualize the lidar in Gazebo -->
-            <update_rate>10</update_rate> 
+            <pose>0 0 0 0 0 0</pose>            <!-- Position and orientation of the sensor -->
+            <visualize>false</visualize>            <!-- Set to true to visualize the lidar in Gazebo -->
+            <update_rate>10</update_rate>
             <ray>
                 <scan>
                     <horizontal>
-                        <samples>360</samples>         
-                        <min_angle>-3.14</min_angle>  
+                        <samples>360</samples>
+                        <min_angle>-3.14</min_angle>
                         <max_angle>3.14</max_angle>
                     </horizontal>
                 </scan>
                 <range>
-                    <min>0.15</min>                   
-                    <max>12.0</max>                  
+                    <min>0.15</min>
+                    <max>12.0</max>
                 </range>
             </ray>
-            <plugin name="$(arg prefix)laser_controller" filename="libgazebo_ros_ray_sensor.so"> <!-- Plugin for ROS integration -->
+            <plugin name="$(arg prefix)laser_controller" filename="libgazebo_ros_ray_sensor.so">                <!-- Plugin for ROS integration -->
                 <ros>
-                    <argument>~/out:=$(arg prefix)scan</argument> <!-- ROS topic for lidar output -->
+                    <argument>~/out:=$(arg prefix)scan</argument>                    <!-- ROS topic for lidar output -->
                 </ros>
-                <output_type>sensor_msgs/LaserScan</output_type> <!-- Type of output message -->
-                <frame_name>$(arg prefix)laser_frame</frame_name>               <!-- Frame name for the sensor -->
+                <output_type>sensor_msgs/LaserScan</output_type>                <!-- Type of output message -->
+                <frame_name>$(arg prefix)laser_frame</frame_name>                <!-- Frame name for the sensor -->
             </plugin>
         </sensor>
     </gazebo>

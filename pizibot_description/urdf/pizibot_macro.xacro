@@ -26,7 +26,12 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 ${pi}"/>
                 <geometry>
-                    <mesh filename="file://$(find pizibot_description)/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
+                    <xacro:if value="$(arg sim_mode)">
+                        <mesh filename="file://$(find pizibot_description)/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
+                    </xacro:if >
+                    <xacro:unless value="$(arg sim_mode)">
+                        <!-- TODO -->
+                    </xacro:unless>
                 </geometry>
                 <material name="white"/>
             </visual>
@@ -59,7 +64,12 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 ${pi} 0"/>
                 <geometry>
-                    <mesh filename="file://$(find pizibot_description)/meshes/left_wheel.stl" scale="0.001 0.001 0.001"/>
+                    <xacro:if value="$(arg sim_mode)">
+                        <mesh filename="file://$(find pizibot_description)/meshes/left_wheel.stl" scale="0.001 0.001 0.001"/>
+                    </xacro:if >
+                    <xacro:unless value="$(arg sim_mode)">
+                        <!-- TODO -->
+                    </xacro:unless>
                 </geometry>
                 <material name="red"/>
             </visual>
@@ -91,7 +101,12 @@
         <link name="${prefix}right_wheel">
             <visual>
                 <geometry>
-                    <mesh filename="file://$(find pizibot_description)/meshes/right_wheel.stl" scale="0.001 0.001 0.001"/>
+                    <xacro:if value="$(arg sim_mode)">
+                        <mesh filename="file://$(find pizibot_description)/meshes/right_wheel.stl" scale="0.001 0.001 0.001"/>
+                    </xacro:if >
+                    <xacro:unless value="$(arg sim_mode)">
+                        <!-- TODO -->
+                    </xacro:unless>
                 </geometry>
                 <material name="red"/>
             </visual>

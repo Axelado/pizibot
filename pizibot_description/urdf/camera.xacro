@@ -11,14 +11,24 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="file://$(find pizibot_description)/meshes/camera_support.stl" scale="0.001 0.001 0.001"/>
+                <xacro:if value="$(arg sim_mode)">
+                    <mesh filename="file://$(find pizibot_description)/meshes/camera_support.stl" scale="0.001 0.001 0.001"/>
+                </xacro:if >
+                <xacro:unless value="$(arg sim_mode)">
+                    <!-- TODO -->
+                </xacro:unless>
             </geometry>
             <material name="gray"/>
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="file://$(find pizibot_description)/meshes/camera_support.stl" scale="0.001 0.001 0.001"/>
+                <xacro:if value="$(arg sim_mode)">
+                    <mesh filename="file://$(find pizibot_description)/meshes/camera_support.stl" scale="0.001 0.001 0.001"/>
+                </xacro:if >
+                <xacro:unless value="$(arg sim_mode)">
+                    <!-- TODO -->
+                </xacro:unless>
             </geometry>
         </collision>
     </link>
@@ -31,13 +41,19 @@
 
     <link name="$(arg prefix)camera_link">
         <visual>
-            <origin xyz="-0.009 0 -0.011" rpy="${pi/2} 0 ${pi/2}"/> <!-- Value to align the camera visual in the correct direction and set the origin at the lens -->
+            <origin xyz="-0.009 0 -0.011" rpy="${pi/2} 0 ${pi/2}"/>
+            <!-- Value to align the camera visual in the correct direction and set the origin at the lens -->
             <geometry>
-                <mesh filename="file://$(find pizibot_description)/meshes/esp_cam.stl" scale="0.001 0.001 0.001"/>
+                <xacro:if value="$(arg sim_mode)">
+                    <mesh filename="file://$(find pizibot_description)/meshes/esp_cam.stl" scale="0.001 0.001 0.001"/>
+                </xacro:if >
+                <xacro:unless value="$(arg sim_mode)">
+                    <!-- TODO -->
+                </xacro:unless>
             </geometry>
             <material name="red"/>
         </visual>
-            <!-- No collision as the camera is inside the support -->        
+        <!-- No collision as the camera is inside the support -->
     </link>
 
     <joint name="$(arg prefix)camera_optical_joint" type="fixed">
@@ -53,12 +69,12 @@
         <sensor name="$(arg prefix)camera" type="camera">
             <pose> 0 0 0 0 0 0 </pose>
             <visualize>true</visualize>
-            <update_rate>15</update_rate> <!-- Max frame rate at full resolution -->
+            <update_rate>15</update_rate>            <!-- Max frame rate at full resolution -->
             <camera>
                 <horizontal_fov>1.089</horizontal_fov>
                 <image>
                     <format>RGB8</format>
-                    <width>1600</width> <!-- UXGA resolution -->
+                    <width>1600</width>                    <!-- UXGA resolution -->
                     <height>1200</height>
                 </image>
                 <clip>
