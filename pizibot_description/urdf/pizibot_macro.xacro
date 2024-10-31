@@ -19,7 +19,7 @@
         <joint name="${prefix}chassis_joint" type="fixed">
             <parent link="${prefix}base_link"/>
             <child link="${prefix}chassis"/>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="0 0 -${pi/2}"/>
         </joint>
 
         <link name="${prefix}chassis">

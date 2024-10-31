@@ -8,7 +8,6 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
-import yaml
 
 
 def generate_launch_description():
