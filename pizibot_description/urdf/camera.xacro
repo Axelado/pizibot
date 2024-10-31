@@ -15,7 +15,7 @@
                     <mesh filename="file://$(find pizibot_description)/meshes/camera_support.stl" scale="0.001 0.001 0.001"/>
                 </xacro:if >
                 <xacro:unless value="$(arg sim_mode)">
-                    <!-- TODO -->
+                        <mesh filename="package://pizibot_description/meshes/camera_support.stl" scale="0.001 0.001 0.001"/>
                 </xacro:unless>
             </geometry>
             <material name="gray"/>
@@ -27,7 +27,7 @@
                     <mesh filename="file://$(find pizibot_description)/meshes/camera_support.stl" scale="0.001 0.001 0.001"/>
                 </xacro:if >
                 <xacro:unless value="$(arg sim_mode)">
-                    <!-- TODO -->
+                        <mesh filename="package://pizibot_description/meshes/camera_support.stl" scale="0.001 0.001 0.001"/>
                 </xacro:unless>
             </geometry>
         </collision>
@@ -48,7 +48,7 @@
                     <mesh filename="file://$(find pizibot_description)/meshes/esp_cam.stl" scale="0.001 0.001 0.001"/>
                 </xacro:if >
                 <xacro:unless value="$(arg sim_mode)">
-                    <!-- TODO -->
+                        <mesh filename="package://pizibot_description/meshes/esp_cam.stl" scale="0.001 0.001 0.001"/>
                 </xacro:unless>
             </geometry>
             <material name="red"/>

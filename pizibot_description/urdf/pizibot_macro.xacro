@@ -30,7 +30,7 @@
                         <mesh filename="file://$(find pizibot_description)/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
                     </xacro:if >
                     <xacro:unless value="$(arg sim_mode)">
-                        <!-- TODO -->
+                        <mesh filename="package://pizibot_description/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
                     </xacro:unless>
                 </geometry>
                 <material name="white"/>
@@ -68,7 +68,7 @@
                         <mesh filename="file://$(find pizibot_description)/meshes/left_wheel.stl" scale="0.001 0.001 0.001"/>
                     </xacro:if >
                     <xacro:unless value="$(arg sim_mode)">
-                        <!-- TODO -->
+                        <mesh filename="package://pizibot_description/meshes/left_wheel.stl" scale="0.001 0.001 0.001"/>
                     </xacro:unless>
                 </geometry>
                 <material name="red"/>
@@ -105,7 +105,7 @@
                         <mesh filename="file://$(find pizibot_description)/meshes/right_wheel.stl" scale="0.001 0.001 0.001"/>
                     </xacro:if >
                     <xacro:unless value="$(arg sim_mode)">
-                        <!-- TODO -->
+                        <mesh filename="package://pizibot_description/meshes/right_wheel.stl" scale="0.001 0.001 0.001"/>
                     </xacro:unless>
                 </geometry>
                 <material name="red"/>
