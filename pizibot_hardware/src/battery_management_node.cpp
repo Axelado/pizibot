@@ -2,12 +2,16 @@
 #include "sensor_msgs/msg/battery_state.hpp"
 #include <pigpio.h>
 #include <unistd.h>
+#include <chrono>
+
+
 
 class BatteryManagementNode : public rclcpp::Node
 {
 public:
     BatteryManagementNode()
-        : Node("battery_management_node")
+        : Node("battery_management_node"),
+          last_received_time_(this->now())
     {
         relay_pin_ = 23; // GPIO pin to control the relay
         setup();         // Initialize the relay configuration
@@ -18,6 +22,10 @@ public:
 
         // Set the low battery threshold to 20%
         low_battery_threshold_ = 0.20;
+
+        timer_ = this->create_wall_timer(
+            std::chrono::seconds(1),
+            std::bind(&BatteryManagementNode::check_timeout, this));
 
         RCLCPP_INFO(this->get_logger(), "Battery Management Node has started.");
     }
@@ -31,7 +39,7 @@ private:
             sleep(0.1);
         }
         gpioSetMode(relay_pin_, PI_OUTPUT);
-        gpioWrite(relay_pin_, PI_ON);
+        gpioWrite(relay_pin_, PI_OFF);
         gpioTerminate(); // Allow other processes to use GPIO
         RCLCPP_INFO(this->get_logger(), "setup OK");
     }
@@ -59,6 +67,7 @@ private:
     // Callback called when the battery message is received
     void battery_callback(const sensor_msgs::msg::BatteryState::SharedPtr msg)
     {
+        last_received_time_ = this->now();
         float battery_percentage = msg->percentage;
         RCLCPP_INFO(this->get_logger(), "Battery Percentage: %.2f%%", battery_percentage * 100);
 
@@ -74,8 +83,21 @@ private:
         }
     }
 
+    void check_timeout()
+    {
+        // Check if 30 seconds have passed without a battery status message
+        auto elapsed_time = (this->now() - last_received_time_).seconds();
+        if (elapsed_time >= 30.0)
+        {
+            RCLCPP_WARN(this->get_logger(), "No battery state received for 30 seconds.");
+            relayOff(); // Turn off the relay if the battery is low
+        }
+    }
+
     // Subscriber for the "battery_state" topic
     rclcpp::Subscription<sensor_msgs::msg::BatteryState>::SharedPtr battery_subscription_;
+    rclcpp::TimerBase::SharedPtr timer_;
+    rclcpp::Time last_received_time_;
 
     // Low battery threshold
     float low_battery_threshold_;
