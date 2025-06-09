@@ -3,7 +3,7 @@ project(pizibot_hardware)
 
 # Compiler options
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
+        add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
 # find dependencies
@@ -14,8 +14,8 @@ find_package(sensor_msgs REQUIRED)
 # battery_management_node
 add_executable(battery_management_node src/battery_management_node.cpp)
 ament_target_dependencies(battery_management_node
-                          rclcpp
-                          sensor_msgs)
+        rclcpp
+        sensor_msgs)
 target_link_libraries(battery_management_node /usr/local/lib/libpigpio.so)
 install(TARGETS battery_management_node
         DESTINATION lib/${PROJECT_NAME})
@@ -30,13 +30,13 @@ install(TARGETS yaml_modifier_node
 
 #battery_state_publisher_node
 add_executable(battery_state_publisher_node src/battery_state_publisher_node.cpp src/ADS1115.cpp)
-ament_target_dependencies(battery_state_publisher_node 
-                          rclcpp  
-                          sensor_msgs)
+ament_target_dependencies(battery_state_publisher_node
+        rclcpp
+        sensor_msgs)
 target_link_libraries(battery_state_publisher_node /usr/local/lib/libpigpio.so)
 install(TARGETS battery_state_publisher_node
         DESTINATION lib/${PROJECT_NAME})
-        
+
 include_directories(include)
 
 install(DIRECTORY include/
@@ -44,5 +44,15 @@ install(DIRECTORY include/
 
 install(DIRECTORY param launch
         DESTINATION share/${PROJECT_NAME})
-        
+
+find_package(ament_cmake_python REQUIRED)
+find_package(rclpy REQUIRED)
+
+ament_python_install_package(${PROJECT_NAME})
+
+#install Py executables
+install(PROGRAMS
+        scripts/esp32cam_stream_getter.py
+        DESTINATION lib/${PROJECT_NAME})
+
 ament_package()
