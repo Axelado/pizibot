@@ -20,11 +20,11 @@ public:
         std::string prefix = this->get_parameter("prefix").as_string();
         
         // If the parameters are valid, modify the YAML file
-        if (!file_path.empty() && !prefix.empty()) {
+        if (!file_path.empty()) {
             RCLCPP_INFO(this->get_logger(), "Modifying YAML file with prefix: '%s'", prefix.c_str());
             modify_yaml_with_prefix(file_path, prefix);
         } else {
-            RCLCPP_ERROR(this->get_logger(), "Invalid parameters: file_path and prefix must be set.");
+            RCLCPP_ERROR(this->get_logger(), "Invalid parameters: file_path and prefix mustfffffffff set.");
         }
     }
 
@@ -36,6 +36,19 @@ private:
 
     // Function to modify the YAML file with the prefix
     void modify_yaml_with_prefix(const std::string& file_path, const std::string& prefix) {
+        std::string out_file = file_path.substr(0, file_path.size() - 5) + "_generated.yaml";
+
+        // Si le préfixe est vide, recopier le fichier d'origine sans modification
+        if (prefix.empty()) {
+            std::ifstream src(file_path);
+            std::ofstream dst(out_file);
+            dst << src.rdbuf();
+            src.close();
+            dst.close();
+            RCLCPP_INFO(this->get_logger(), "Prefix is empty, copied original YAML to '%s' without modification.", out_file.c_str());
+            return;
+        }
+
         YAML::Node config = YAML::LoadFile(file_path);
 
         // Check and modify the parameters by adding the prefix
@@ -67,8 +80,6 @@ private:
             RCLCPP_ERROR(this->get_logger(), "Invalid YAML structure: missing keys 'diff_cont' or 'ros__parameters'");
             return;
         }
-
-        std::string out_file = file_path.substr(0, file_path.size() - 5) + "_generated.yaml";
 
         // Write the modifications to a file
         std::ofstream fout(out_file);
