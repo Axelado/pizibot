@@ -32,7 +32,7 @@ def generate_launch_description():
 
     prefix_arg = DeclareLaunchArgument(
         'prefix',
-        default_value='pizibot_',
+        default_value='',
         description='Prefix used to identify a robot when multiple instances of the same robot are present'
     )
     prefix = LaunchConfiguration('prefix')
