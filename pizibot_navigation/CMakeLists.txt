@@ -12,7 +12,7 @@ find_package(std_msgs REQUIRED)
 
 
 install(
-  DIRECTORY param launch rviz
+  DIRECTORY param launch rviz map
   DESTINATION share/${PROJECT_NAME}
 )
 ament_package()
