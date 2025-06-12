@@ -84,6 +84,12 @@ def generate_launch_description():
             parameters=[twist_mux_params]
     )
 
+    esp32cam_stream_getter = Node(
+            package=package_name,
+            executable='esp32cam_stream_getter.py',
+            name='esp32cam_stream_getter',
+    )
+
     return LaunchDescription([
         prefix_arg,
         controllers_param_modifer,
@@ -93,4 +99,5 @@ def generate_launch_description():
         delayed_diff_drive_spawner,
         delayed_joint_broad_spawner,
         lidar,
+        esp32cam_stream_getter,
     ])
