@@ -1,3 +1,28 @@
+"""
+full_localization.launch.py
+
+This ROS 2 launch file starts a complete localization setup for the Pizibot robot.
+It launches:
+    - Localization (AMCL, map_server)
+    - The navigation stack (Nav2)
+    - Joystick and keyboard teleoperation nodes
+    - RViz2 with a localization-specific configuration
+    - An initial pose publisher (with a delay)
+
+Each subsystem is started via its own launch file, and the script checks for the existence of all required files before launching.
+A Python logger is used to display the paths and report any missing files.
+
+IMPORTANT:
+    You must launch the simulation (Gazebo) or start the real robot before running this launch file.
+    This launch file does NOT start the robot simulation or hardware drivers.
+
+Usage:
+    ros2 launch pizibot_navigation full_localization.launch.py
+
+Author: Axel NIATO
+Date: 11/06/2025
+"""
+
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -22,17 +47,9 @@ def generate_launch_description():
         description='Full path to the map to use for localization'
     )
     
-    world_arg = DeclareLaunchArgument(
-        'world',
-        default_value=os.path.join(get_package_share_directory("pizibot_gazebo"), 'worlds', 'world_test2.world'),
-        description='Full path to the world to use'
-    )
-    
     map = LaunchConfiguration('map')
-    world = LaunchConfiguration('world')
     
     # Build the paths to each component's launch file
-    launch_sim_path = os.path.join(get_package_share_directory("pizibot_gazebo"), 'launch', 'launch_sim.launch.py')
     joystick_teleop_launch_path = os.path.join(get_package_share_directory("pizibot_teleop"), 'launch', 'joystick_teleop.launch.py')
     keyboard_teleop_launch_path = os.path.join(get_package_share_directory("pizibot_teleop"), 'launch', 'keyboard_teleop.launch.py')
     localization_launch_path = os.path.join(get_package_share_directory(package_name), 'launch', 'localization_launch.py')
@@ -44,7 +61,6 @@ def generate_launch_description():
     rviz_config_file = os.path.join(get_package_share_directory(package_name), 'rviz', 'localization.rviz')
 
     # Log the paths to check their correctness
-    logger.debug(f"launch_sim_path: {launch_sim_path}")
     logger.debug(f"joystick_launch_path: {joystick_teleop_launch_path}")
     logger.debug(f"keyboard_launch_path: {keyboard_teleop_launch_path}")
     logger.debug(f"localization_launch_path: {localization_launch_path}")
@@ -54,10 +70,6 @@ def generate_launch_description():
     logger.debug(f"publish_initial_pose_launch_path: {publish_initial_pose_launch_path}")
 
     # Check that all files exist, log an error if any are missing
-    if not os.path.isfile(launch_sim_path):
-        logger.error(f"{launch_sim_path} does not exist")
-    if not os.path.isfile(joystick_teleop_launch_path):
-        logger.error(f"{joystick_teleop_launch_path} does not exist")
     if not os.path.isfile(localization_launch_path):
         logger.error(f"{localization_launch_path} does not exist")
     if not os.path.isfile(navigation_launch_path):
@@ -70,11 +82,6 @@ def generate_launch_description():
         logger.error(f"{publish_initial_pose_launch_path} does not exist")
     
     # Include each component's launch file
-    simulation = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(launch_sim_path),
-        launch_arguments={'world': world}.items()
-    )
-    
     joystick_teleop = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(joystick_teleop_launch_path), 
         launch_arguments={'use_sim_time': 'true'}.items()
@@ -115,13 +122,11 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        world_arg,
         map_arg,
         navigation,
         localization,
         joystick_teleop,
         keyboard_teleop,
         rviz2,
-        simulation,
         publish_initial_pose
     ])
