@@ -1,24 +1,73 @@
-
 # PIZIBOT
 
-**PIZIBOT** is a ROS 2 package for a two-wheeled mobile robot designed for navigation and computer vision. The project is in its very early stages, and no functionality has been developed yet.
+**PIZIBOT** is a ROS 2 package for a two-wheeled mobile robot designed for navigation and computer vision.
 
 ## Project Status
 
-Currently, this project is in the planning phase, and the initial setup for robot description and basic control systems is being worked on. No functionalities such as motor control, navigation, or computer vision have been implemented yet.
+The project is under active development.  
+Basic functionalities for robot description, control, SLAM, and navigation are now available.  
+You will find launch files for both simulation and real robot usage.
 
-## Planned Features
+## Main Features
 
 - **General Robot Management**:
-  - **Battery Management**: Implement monitoring and management of battery levels, with automated alerts for low battery.
-  - **LCD Display Integration**: Set up a 16x2 LCD display for real-time robot status information (battery level, connection status, etc.).
-- **Motor Control**: Implement low-level motor control for the robot's differential drive system.
-- **Sensor Integration**: Add support for LIDAR, cameras, and other sensors for environmental awareness.
-- **SLAM**: Add support for Simultaneous Localization and Mapping.
-- **Navigation**: Integrate ROS 2 Navigation (Nav2) for autonomous movement and path planning.
-- **Computer Vision**: Implement object detection and tracking capabilities using onboard cameras.
-- **Web Interface**: Create a web server to allow remote interaction with the robot via a browser. This interface will allow control, monitoring, and diagnostics of the robot.
+  - **Battery Management**: Battery level monitoring and automatic safety actions. **(Implemented)**
+  - **LCD Display Integration**: 16x2 LCD for real-time robot status (battery, connection, etc.). **(Not yet implemented)**
+- **Motor Control**: Differential drive motor control. **(Implemented)**
+- **Sensor Integration**: Support for LIDAR, cameras, and other sensors. **(Implemented)**
+- **SLAM**: Online mapping with SLAM Toolbox. **(Implemented)**
+- **Navigation**: ROS 2 Navigation (Nav2) for autonomous movement and path planning. **(Implemented)**
+- **Computer Vision**: Object detection and tracking with onboard cameras. **(Not yet implemented)**
+- **Web Interface**: Remote control and monitoring via a web browser. **(Not yet implemented)**
+
+## Launch Files
+
+- **Simulation**:  
+  Launch the robot in Gazebo with:
+
+  ```bash
+  ros2 launch pizibot_gazebo launch_sim.launch.py
+  ```
+
+- **Mapping (SLAM) – Simulation or Real Robot**:  
+
+  ```bash
+  ros2 launch pizibot_navigation full_mapping.launch.py
+  ```
+
+  > **Note:** You must start the simulation or the real robot before running this launch file.
+
+- **Localization & Navigation – Simulation or Real Robot**:  
+
+  ```bash
+  ros2 launch pizibot_navigation full_localization.launch.py
+  ```
+
+  > **Note:** You must start the simulation or the real robot before running this launch file.
 
 ## Getting Started
 
-This repository is still under development, and no runnable code or launch files are available at the moment. Future instructions for setting up and running the robot will be provided as the development progresses.
+1. **Clone the repository and build the workspace:**
+
+    ```bash
+    cd ~/ROS/pizi_ws/src
+    git clone <this-repo>
+    cd ..
+    rosdep install --from-paths src --ignore-src -r -y
+    colcon build
+    source install/setup.bash
+    ```
+
+2. **Start the simulation or connect your real robot.**
+
+3. **Use the provided launch files for mapping or localization/navigation as described above.**
+
+## Documentation
+
+- Each launch file contains detailed comments and usage instructions.
+- For more details on configuration and usage, see the documentation in each package.
+
+---
+
+**Contributions are welcome!**  
+Feel free to open issues or submit pull requests.
