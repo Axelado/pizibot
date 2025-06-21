@@ -4,6 +4,7 @@ from glob import glob
 
 package_name = 'pizibot_voice'
 launch_files = glob(os.path.join('launch', '*.launch.py'))
+data_files = glob(os.path.join('data', '*.json'))
 
 
 setup(
@@ -14,7 +15,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/data', ['data/rooms_data.json']),
+        ('share/' + package_name + '/data', data_files),
         ('share/' + package_name + '/launch', launch_files),
     ],
     install_requires=['setuptools', 'pynput', 'sounddevice', 'wavio', 'SpeechRecognition', 'gtts'],
