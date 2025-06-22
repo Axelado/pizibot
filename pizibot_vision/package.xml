@@ -7,15 +7,21 @@
   <maintainer email="axelniato@gmail.com">axel</maintainer>
   <license>TODO: License declaration</license>
 
-  <depend>rclpy</depend>
-  <depend>std_msgs</depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_python</buildtool_depend>
 
-  <test_depend>ament_copyright</test_depend>
-  <test_depend>ament_flake8</test_depend>
-  <test_depend>ament_pep257</test_depend>
-  <test_depend>python3-pytest</test_depend>
+  <build_depend>rclcpp</build_depend>
+  <build_depend>rclpy</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>cv_bridge</build_depend>
+  <build_depend>OpenCV</build_depend>
+  <exec_depend>rclcpp</exec_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>cv_bridge</exec_depend>
+  <exec_depend>OpenCV</exec_depend>
 
   <export>
-    <build_type>ament_python</build_type>
+    <build_type>ament_cmake</build_type>
   </export>
 </package>
