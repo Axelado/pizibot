@@ -22,7 +22,7 @@ def generate_launch_description():
 
     gazebo_world_arg = DeclareLaunchArgument(
         'gazebo_world',
-        default_value=os.path.join(pkg_path, 'worlds', 'world_test2.world'),
+        default_value=os.path.join(pkg_path, 'worlds', 'world_test1.world'),
         description='Full path to the world to use for simulation'
     )
     gazebo_world = LaunchConfiguration('gazebo_world')
