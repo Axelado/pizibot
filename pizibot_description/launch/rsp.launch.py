@@ -6,6 +6,7 @@ from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration, Command
 from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 
 def generate_launch_description():
 
@@ -16,21 +17,20 @@ def generate_launch_description():
         description='Use sim time if true'
     )
     
-    # Prefix argument for robot identification
-    prefix = LaunchConfiguration('prefix')
-    prefix_arg = DeclareLaunchArgument(
-        'prefix',
-        default_value='',
-        description='Prefix used to identify a robot when multiple instances of the same robot are present'
-    )
+    # prefix removed; names are unprefixed
 
     pkg_path = os.path.join(get_package_share_directory('pizibot_description'))
     xacro_file = os.path.join(pkg_path, 'urdf', 'pizibot.urdf.xacro')
 
     # Generate the robot description using xacro and the prefix argument
-    robot_description_config = Command(['xacro ', xacro_file, ' prefix:=' , prefix, ' sim_mode:=', use_sim_time])
-    
-    params = {'robot_description': robot_description_config, 'use_sim_time': use_sim_time}
+    robot_description_config = Command([
+        'xacro', ' ', xacro_file, ' ', 'sim_mode:=', use_sim_time
+    ])
+
+    params = {
+        'robot_description': ParameterValue(robot_description_config, value_type=str),
+        'use_sim_time': use_sim_time,
+    }
     node_robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -40,6 +40,5 @@ def generate_launch_description():
 
     return LaunchDescription([
         use_sim_time_arg,
-        prefix_arg,
         node_robot_state_publisher,
     ])

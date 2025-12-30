@@ -1,37 +1,32 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:macro name="pizibot" params="prefix">
+    <xacro:macro name="pizibot">
 
         <!-- BASE LINK -->
-        <link name="${prefix}base_link"></link>
+        <link name="base_link"></link>
 
         <!-- BASE LINK FOOTPRINT -->
-        <link name="${prefix}base_footprint"></link>
+        <link name="base_footprint"></link>
 
-        <joint name="${prefix}base_footprint_joint" type="fixed">
-            <parent link="${prefix}base_link"/>
-            <child link="${prefix}base_footprint"/>
+        <joint name="base_footprint_joint" type="fixed">
+            <parent link="base_link"/>
+            <child link="base_footprint"/>
             <origin xyz="0 0 -${ground_clearance/2}" rpy="0 0 0"/>
         </joint>
 
         <!-- CHASSIS -->
-        <joint name="${prefix}chassis_joint" type="fixed">
-            <parent link="${prefix}base_link"/>
-            <child link="${prefix}chassis"/>
+        <joint name="chassis_joint" type="fixed">
+            <parent link="base_link"/>
+            <child link="chassis"/>
             <origin xyz="0 0 0" rpy="0 0 -${pi/2}"/>
         </joint>
 
-        <link name="${prefix}chassis">
+        <link name="chassis">
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 ${pi}"/>
                 <geometry>
-                    <xacro:if value="$(arg sim_mode)">
-                        <mesh filename="file://$(find pizibot_description)/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
-                    </xacro:if >
-                    <xacro:unless value="$(arg sim_mode)">
-                        <mesh filename="package://pizibot_description/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
-                    </xacro:unless>
+                    <mesh filename="package://pizibot_description/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="white"/>
             </visual>
@@ -48,28 +43,24 @@
             </xacro:inertial_cylinder>
         </link>
 
-        <gazebo reference="${prefix}chassis">
+        <gazebo reference="chassis">
             <material>Gazebo/SkyBlue</material>
         </gazebo>
 
         <!-- left_wheel -->
-        <joint name="${prefix}left_wheel_joint" type="continuous">
-            <parent link="${prefix}chassis"/>
-            <child link="${prefix}left_wheel"/>
+        <joint name="left_wheel_joint" type="continuous">
+            <parent link="chassis"/>
+            <child link="left_wheel"/>
             <origin xyz="${-((robot_diameter/2)-(wheel_width/2))} 0 ${ground_clearance}" rpy="-${pi/2} 0 ${pi/2}"/>
             <axis xyz="0 0 1"/>
+            <limit effort="${max_wheel_effort}" velocity="${max_wheel_velocity}"/>
         </joint>
 
-        <link name="${prefix}left_wheel">
+        <link name="left_wheel">
             <visual>
                 <origin xyz="0 0 0" rpy="0 ${pi} 0"/>
                 <geometry>
-                    <xacro:if value="$(arg sim_mode)">
-                        <mesh filename="file://$(find pizibot_description)/meshes/left_wheel.stl" scale="0.001 0.001 0.001"/>
-                    </xacro:if >
-                    <xacro:unless value="$(arg sim_mode)">
-                        <mesh filename="package://pizibot_description/meshes/left_wheel.stl" scale="0.001 0.001 0.001"/>
-                    </xacro:unless>
+                    <mesh filename="package://pizibot_description/meshes/left_wheel.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="red"/>
             </visual>
@@ -85,28 +76,24 @@
             </xacro:inertial_cylinder>
         </link>
 
-        <gazebo reference="${prefix}left_wheel">
+        <gazebo reference="left_wheel">
             <material>Gazebo/Red</material>
         </gazebo>
 
 
         <!-- right_wheel -->
-        <joint name="${prefix}right_wheel_joint" type="continuous">
-            <parent link="${prefix}chassis"/>
-            <child link="${prefix}right_wheel"/>
+        <joint name="right_wheel_joint" type="continuous">
+            <parent link="chassis"/>
+            <child link="right_wheel"/>
             <origin xyz="${((robot_diameter/2)-(wheel_width/2))} 0 ${ground_clearance}" rpy="-${pi/2} 0 -${pi/2}"/>
             <axis xyz="0 0 -1"/>
+            <limit effort="${max_wheel_effort}" velocity="${max_wheel_velocity}"/>
         </joint>
 
-        <link name="${prefix}right_wheel">
+        <link name="right_wheel">
             <visual>
                 <geometry>
-                    <xacro:if value="$(arg sim_mode)">
-                        <mesh filename="file://$(find pizibot_description)/meshes/right_wheel.stl" scale="0.001 0.001 0.001"/>
-                    </xacro:if >
-                    <xacro:unless value="$(arg sim_mode)">
-                        <mesh filename="package://pizibot_description/meshes/right_wheel.stl" scale="0.001 0.001 0.001"/>
-                    </xacro:unless>
+                    <mesh filename="package://pizibot_description/meshes/right_wheel.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="red"/>
             </visual>
@@ -122,18 +109,18 @@
             </xacro:inertial_cylinder>
         </link>
 
-        <gazebo reference="${prefix}right_wheel">
+        <gazebo reference="right_wheel">
             <material>Gazebo/Red</material>
         </gazebo>
 
         <!-- FRONT CASTER WHEEL -->
-        <joint name="$(arg prefix)front_caster_wheel_joint" type="fixed">
-            <parent link="${prefix}chassis"/>
-            <child link="$(arg prefix)front_caster_wheel"/>
+        <joint name="front_caster_wheel_joint" type="fixed">
+            <parent link="chassis"/>
+            <child link="front_caster_wheel"/>
             <origin xyz="0 -${caster_wheel_distance} 0" rpy="0 0 0"/>
         </joint>
 
-        <link name="$(arg prefix)front_caster_wheel">
+        <link name="front_caster_wheel">
             <visual>
                 <geometry>
                     <sphere radius="${caster_wheel_diameter/2}" />
@@ -152,7 +139,7 @@
             </xacro:inertial_sphere>
         </link>
 
-        <gazebo reference="$(arg prefix)front_caster_wheel">
+        <gazebo reference="front_caster_wheel">
             <material>Gazebo/Black</material>
             <mu1 value="0.001"/>
             <mu2 value="0.001"/>
@@ -160,13 +147,13 @@
 
 
         <!-- BACK CASTER WHEEL -->
-        <joint name="$(arg prefix)back_caster_wheel_joint" type="fixed">
-            <parent link="${prefix}chassis"/>
-            <child link="$(arg prefix)back_caster_wheel"/>
+        <joint name="back_caster_wheel_joint" type="fixed">
+            <parent link="chassis"/>
+            <child link="back_caster_wheel"/>
             <origin xyz="0 ${caster_wheel_distance} 0" rpy="0 0 0"/>
         </joint>
 
-        <link name="$(arg prefix)back_caster_wheel">
+        <link name="back_caster_wheel">
             <visual>
                 <geometry>
                     <sphere radius="${caster_wheel_diameter/2}" />
@@ -185,7 +172,7 @@
             </xacro:inertial_sphere>
         </link>
 
-        <gazebo reference="$(arg prefix)front_caster_wheel">
+        <gazebo reference="back_caster_wheel">
             <material>Gazebo/Black</material>
             <mu1 value="0.001"/>
             <mu2 value="0.001"/>

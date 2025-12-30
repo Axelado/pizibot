@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pizibot">
 
-    <xacro:arg name="prefix" default=""/>
+    <!-- prefix removed: names are unprefixed now -->
     <xacro:arg name="sim_mode" default="false"/>
 
     <xacro:include filename="material_colors.xacro" />
@@ -9,9 +9,9 @@
     <xacro:include filename="dimensions.xacro" />
     <xacro:include filename="pizibot_macro.xacro" />
     <xacro:include filename="lidar.xacro" />
-    <xacro:include filename="ros2_control.xacro" />
+    <xacro:include filename="control.xacro" />
     <xacro:include filename="camera.xacro" />
 
-    <xacro:pizibot prefix="$(arg prefix)"/>
+    <xacro:pizibot/>
     
 </robot>
