@@ -8,7 +8,7 @@ def generate_launch_description():
 
     package_name='pizibot_teleop'
     
-    joy_params = os.path.join(get_package_share_directory(package_name),'param','joystick.yaml')
+    joy_params = os.path.join(get_package_share_directory(package_name),'params','joystick.yaml')
     joy_node = Node(
             package='joy',
             executable='joy_node',
@@ -20,7 +20,7 @@ def generate_launch_description():
             executable='teleop_node',
             name = 'teleop_node',
             parameters=[joy_params],
-            remappings=[('/cmd_vel', '/cmd_vel_joy')]
+            remappings=[('/cmd_vel', '/cmd_vel_joy')],
             )
 
     return LaunchDescription([
