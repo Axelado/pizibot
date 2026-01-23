@@ -1,29 +1,29 @@
 """
 voice_recorder.py
 
-This ROS 2 node listens for a trigger on the 'start_talking' topic to record the user's voice,
-recognizes the spoken command, extracts the room number, and publishes it on the 'room_number' topic.
+ROS 2 (Jazzy) node that records audio when it receives "1" on `start_talking`, runs Google Speech
+Recognition, extracts the room number from simple French phrases, and publishes it on `room_number`.
 
 Workflow:
-    1. Waits for a message "1" on the 'start_talking' topic to start recording.
-    2. Records audio from the microphone for a fixed duration and saves it as a WAV file.
-    3. Uses Google Speech Recognition to transcribe the audio to text.
-    4. Extracts the room number from commands like "va à la salle X" or "va en salle Y" (French).
-    5. Publishes the extracted room number as an Int16 message on the 'room_number' topic.
+    1. Wait for "1" on `start_talking` to begin recording.
+    2. Record audio (default 4 s, 44.1 kHz stereo) and save a temporary WAV in the package share.
+    3. Transcribe with Google Speech Recognition (language fr-FR).
+    4. Parse commands like "va à la salle X" / "va en salle Y" to extract the room number.
+    5. Publish the room number on `room_number` as std_msgs/Int16; delete the temp file.
 
 Usage:
-    - Run as part of the voice_room_navigation.launch.py launch file or standalone.
-    - Press and hold the space bar (using keyboard_activator) to trigger voice recording.
+    - Launch via voice_room_navigation.launch.py or standalone.
+    - Hold space (keyboard_activator) to trigger recording.
+
+Topics:
+    Subscribed: `start_talking` (std_msgs/String)
+    Published:  `room_number` (std_msgs/Int16)
 
 Dependencies:
-    - sounddevice
-    - wavio
-    - speech_recognition
-    - pynput (for keyboard_activator)
-    - Google Speech Recognition API (internet required)
-
-Author: Axel NIATO
-Date: 20/06/2025
+    - sounddevice (audio capture)
+    - wavio (WAV serialization)
+    - SpeechRecognition (Google API client; internet required)
+    - ament_index_python (resolve package share path)
 """
 
 import rclpy

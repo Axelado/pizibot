@@ -1,17 +1,18 @@
 """
 keyboard_activator.py
 
-This ROS 2 node allows the user to activate or deactivate the voice command system using the space bar.
-When the space bar is pressed, the node publishes '1' on the 'start_talking' topic to signal the start of voice recording.
-When the space bar is released, it publishes '0' to signal the end of voice recording.
+ROS 2 (Jazzy) node that toggles the voice pipeline with the space bar. When space is pressed it publishes
+"1" on the `start_talking` topic (begin recording); when released it publishes "0" (stop recording).
 
 Usage:
-    - Run this node as part of the voice_room_navigation.launch.py launch file or standalone.
-    - Press and hold the space bar to activate voice command.
-    - Release the space bar to deactivate voice command.
+    - Launch via voice_room_navigation.launch.py or standalone.
+    - Hold space to start recording, release to stop.
 
-Author: Axel NIATO
-Date: 20/06/2025
+Topics:
+    Published: `start_talking` (std_msgs/String) → "1" when pressed, "0" when released.
+
+Dependencies:
+    - pynput (keyboard listener; requires an X session or console with permissions)
 """
 
 import rclpy

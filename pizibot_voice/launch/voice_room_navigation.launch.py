@@ -1,37 +1,43 @@
 """
 voice_room_navigation.launch.py
 
-This ROS 2 launch file starts the voice command stack for room navigation on the Pizibot robot.
+Launches the voice command pipeline for room navigation on Pizibot (ROS 2 Jazzy).
 
-**IMPORTANT:**  
-This voice system is limited to sending the robot to a specific room.  
-It does not support general voice control or arbitrary commands.
+Nodes started:
+    - keyboard_activator: toggles recording with the space bar (publishes start_talking)
+    - voice_recorder: records audio, runs speech-to-text, publishes room_number
+    - pose_publish_from_room_number: maps room_number to goal_pose
 
-Launched nodes:
-    - keyboard_activator: Activates the voice system via keyboard input.
-    - voice_recorder: Records and processes the user's voice command.
-    - pose_publish_from_room_number: Publishes the navigation goal corresponding to the recognized room number.
+Limitations: only handles simple "go to room N" commands; not a general voice assistant.
 
 Usage:
-    ros2 launch pizibot_voice voice_room_navigation.launch.py
-
-Author: Axel NIATO
-Date: 20/06/2025
+    ros2 launch pizibot_voice voice_room_navigation.launch.py [use_sim_time:=true|false]
 """
 
+import os
 from launch import LaunchDescription
 from launch_ros.actions import Node
 
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
+from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     package_name = 'pizibot_voice'
+    default_room_data_path = os.path.join(
+        get_package_share_directory(package_name), 'data', 'world_test2_rooms_data.json'
+    )
     
     use_sim_time_arg = DeclareLaunchArgument(
         'use_sim_time',
         default_value='true',
         description='Use simulation time'
+    )
+
+    room_data_path_arg = DeclareLaunchArgument(
+        'room_data_path',
+        default_value=default_room_data_path,
+        description='Path to the room mapping JSON file'
     )
     
     use_sim_time = LaunchConfiguration('use_sim_time')
@@ -57,12 +63,16 @@ def generate_launch_description():
         executable='pose_publish_from_room_number',
         name='pose_publish_from_room_number',
         output='screen',
-        parameters=[{'use_sim_time': use_sim_time}]
+        parameters=[
+            {'use_sim_time': use_sim_time},
+            {'room_data_path': LaunchConfiguration('room_data_path')}
+        ]
     )
 
     # Return the launch description
     return LaunchDescription([
         use_sim_time_arg,
+        room_data_path_arg,
         keyboard_activator,
         voice_recorder,
         pose_publish_from_room_number,

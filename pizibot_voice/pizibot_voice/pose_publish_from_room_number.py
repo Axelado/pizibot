@@ -1,21 +1,21 @@
 """
 pose_publish_from_room_number.py
 
-This ROS 2 node listens for a room number on the 'room_number' topic and publishes the corresponding goal pose
-on the 'goal_pose' topic for navigation. The mapping between room numbers and their coordinates is loaded from
-a JSON file (rooms_data.json) located in the package's data directory.
+ROS 2 (Jazzy) node that converts a room number received on `room_number` into a navigation goal pose published
+on `goal_pose`. Coordinates are loaded from data/world_test2_rooms_data.json in the package share.
 
 Workflow:
-    1. Receives a room number (Int16) on the 'room_number' topic.
-    2. Looks up the corresponding coordinates in rooms_data.json.
-    3. Publishes a PoseStamped message with the goal pose on the 'goal_pose' topic.
+    1. Receive room number (std_msgs/Int16) on `room_number`.
+    2. Look up coordinates in world_test2_rooms_data.json.
+    3. Publish PoseStamped on `goal_pose` in the map frame.
 
 Usage:
-    - Run as part of the voice_room_navigation.launch.py launch file or standalone.
-    - Make sure the rooms_data.json file exists and is properly formatted.
+    - Launch via voice_room_navigation.launch.py or standalone.
+    - Ensure the mapping file exists and contains the requested room.
 
-Author: Axel NIATO
-Date: 20/06/2025
+Topics:
+    Subscribed: `room_number` (std_msgs/Int16)
+    Published:  `goal_pose` (geometry_msgs/PoseStamped, frame_id=map)
 """
 
 import rclpy
@@ -30,7 +30,8 @@ from std_msgs.msg import Header
 import json
 
 package_name = "pizibot_voice"
-room_data_path = os.path.join(get_package_share_directory(package_name), 'data','rooms_data.json')
+# Default mapping file packaged in data/world_test2_rooms_data.json
+room_data_path = os.path.join(get_package_share_directory(package_name), 'data', 'world_test2_rooms_data.json')
 
 class PosePublishFromRoomNumber(Node):
     """
@@ -38,7 +39,12 @@ class PosePublishFromRoomNumber(Node):
     """
     def __init__(self):
         super().__init__('pose_publish_from_room_number')
-        self.rooms_data = self.read_rooms_data()
+        # Allow overriding the room mapping via ROS parameter while keeping package default.
+        self.room_data_path = self.declare_parameter(
+            'room_data_path', room_data_path
+        ).get_parameter_value().string_value
+
+        self.rooms_data = self.read_rooms_data(self.room_data_path)
         self.pose_publisher_ = self.create_publisher(PoseStamped, 'goal_pose', 10)
         self.subscription = self.create_subscription(
             Int16,
@@ -89,12 +95,18 @@ class PosePublishFromRoomNumber(Node):
         self.pose_publisher_.publish(msg)
         self.get_logger().info("Goal pose published")
         
-    def read_rooms_data(self):
+    def read_rooms_data(self, path):
         """
         Load the room coordinates from the JSON file.
         """
-        with open(room_data_path, 'r') as f:
-            return json.load(f)
+        try:
+            with open(path, 'r') as f:
+                data = json.load(f)
+            self.get_logger().info(f"Loaded room mapping from {path}")
+            return data
+        except Exception as exc:  # minimal guard to fail loudly but informatively
+            self.get_logger().error(f"Failed to load room mapping file {path}: {exc}")
+            raise
     
 def main(args=None):
     rclpy.init(args=args)

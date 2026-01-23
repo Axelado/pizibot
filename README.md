@@ -14,10 +14,10 @@ The project is under active development with ongoing migration to **ROS 2 Jazzy*
   - `pizibot_gz` - Gazebo Harmonic simulation (replaces `pizibot_gazebo`)
   - `pizibot_teleop` - Keyboard and joystick teleoperation
   - `pizibot_navigation` - SLAM and Nav2 navigation stack
+  - `pizibot_voice` - Voice control for room navigation
 - ⏳ **Pending Migration**:
   - `pizibot_hardware` - Real robot hardware interface and battery management
   - `pizibot_vision` - Computer vision package
-  - `pizibot_voice` - Voice control features
 
 Basic functionalities for robot description, control, SLAM, and navigation are now available.  
 You will find launch files for both simulation and real robot usage.
@@ -47,14 +47,6 @@ The following packages are **still based on ROS 2 Humble** and require migration
   - ROS 2 Jazzy integration
 - **Timeline**: To be implemented
 
-#### 3. **pizibot_voice** - Voice Control
-- **Status**: Partially implemented, Humble-based
-- **What's missing**:
-  - Jazzy compatibility
-  - Voice command parsing improvements
-  - Integration testing
-- **Workaround**: Use only with ROS 2 Humble
-
 ### Current Limitations
 
 - **Real Robot Testing**: Hardware interface packages are not yet Jazzy-compatible
@@ -64,9 +56,10 @@ The following packages are **still based on ROS 2 Humble** and require migration
 
 ### Recommended Usage
 
-- **🎮 For Simulation Testing**: Use `pizibot_description`, `pizibot_gz`, `pizibot_teleop`, and `pizibot_navigation` (all Jazzy-ready)
+- **🎮 For Simulation Testing**: Use `pizibot_description`, `pizibot_gz`, `pizibot_teleop`, `pizibot_navigation`, and `pizibot_voice` (all Jazzy-ready)
 - **🤖 For Real Robot**: Still requires ROS 2 Humble environment until `pizibot_hardware` is migrated
 - **🗺️ For Navigation/SLAM**: Use `pizibot_navigation` with Gazebo Harmonic simulation (Jazzy-compatible)
+- **🎙️ For Voice Control**: Use `pizibot_voice` for voice-activated room navigation (Jazzy-compatible)
 
 ## Main Features
 

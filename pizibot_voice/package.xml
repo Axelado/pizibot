@@ -3,13 +3,20 @@
 <package format="3">
   <name>pizibot_voice</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>Voice control package for Pizibot robot - enables voice-activated room navigation</description>
   <maintainer email="axelniato@gmail.com">Axel NIATO</maintainer>
-  <license>TODO: License declaration</license>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
 
   <depend>rclpy</depend>
   <depend>geometry_msgs</depend>
   <depend>std_msgs</depend>
+  <depend>ament_index_python</depend>
+
+  <exec_depend>python3-pynput</exec_depend>
+  <exec_depend>python3-sounddevice</exec_depend>
+  <exec_depend>python3-speechrecognition</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
