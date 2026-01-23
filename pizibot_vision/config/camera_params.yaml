@@ -1,0 +1,9 @@
+/**:
+  ros__parameters:
+    # Camera configuration
+    camera_index: 0
+    image_topic: "camera/image_raw"
+    width: 640
+    height: 480
+    fps: 30
+    frame_id: "camera_link"

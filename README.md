@@ -15,9 +15,9 @@ The project is under active development with ongoing migration to **ROS 2 Jazzy*
   - `pizibot_teleop` - Keyboard and joystick teleoperation
   - `pizibot_navigation` - SLAM and Nav2 navigation stack
   - `pizibot_voice` - Voice control for room navigation
+  - `pizibot_vision` - Computer vision and camera publisher
 - ⏳ **Pending Migration**:
   - `pizibot_hardware` - Real robot hardware interface and battery management
-  - `pizibot_vision` - Computer vision package
 
 Basic functionalities for robot description, control, SLAM, and navigation are now available.  
 You will find launch files for both simulation and real robot usage.
@@ -38,14 +38,6 @@ The following packages are **still based on ROS 2 Humble** and require migration
   - Testing on real hardware with Jazzy
   - Hardware dependencies verification
 - **Workaround**: Use only with ROS 2 Humble on real robot hardware
-
-#### 2. **pizibot_vision** - Computer Vision
-- **Status**: Planned, not yet implemented
-- **What's needed**:
-  - Object detection pipeline
-  - Camera calibration and configuration
-  - ROS 2 Jazzy integration
-- **Timeline**: To be implemented
 
 ### Current Limitations
 
@@ -70,7 +62,7 @@ The following packages are **still based on ROS 2 Humble** and require migration
 - **Sensor Integration**: Support for LIDAR, cameras, and other sensors. **(Implemented)**
 - **SLAM**: Online mapping with SLAM Toolbox. **(Implemented)**
 - **Navigation**: ROS 2 Navigation (Nav2) for autonomous movement and path planning. **(Implemented)**
-- **Computer Vision**: Object detection and tracking with onboard cameras. **(Not yet implemented)**
+- **Computer Vision**: Camera image capture and publishing. **(Implemented - Camera Publisher)**
 - **Web Interface**: Remote control and monitoring via a web browser. **(Not yet implemented)**
 
 ## Launch Files
@@ -99,6 +91,14 @@ The following packages are **still based on ROS 2 Humble** and require migration
   ```
 
   > **Note:** You must start the simulation or the real robot before running this launch file.
+
+- **Camera Publisher – Simulation or Real Robot**:  
+
+  ```bash
+  ros2 launch pizibot_vision camera.launch.py
+  ```
+
+  > **Note:** Publishes camera images to the `camera/image_raw` topic. You can customize parameters like `camera_index`, `fps`, `width`, `height`.
 
 ## Getting Started
 
