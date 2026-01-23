@@ -19,7 +19,7 @@ Usage:
     ros2 launch pizibot_navigation full_mapping.launch.py
 
 Author: Axel NIATO
-Date: 11/06/2025
+Date: January 2026
 """
 
 from launch import LaunchDescription

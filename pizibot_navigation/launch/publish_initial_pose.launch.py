@@ -1,3 +1,21 @@
+"""
+publish_initial_pose.launch.py
+
+This ROS 2 launch file starts the initial_pose_publisher node, which publishes
+an initial pose estimate to the /initialpose topic for AMCL localization.
+
+The node publishes the pose for 3 seconds at 10 Hz to ensure AMCL receives it.
+
+Usage:
+    ros2 launch pizibot_navigation publish_initial_pose.launch.py initial_pose:="[x, y, yaw]"
+
+Example:
+    ros2 launch pizibot_navigation publish_initial_pose.launch.py initial_pose:="[1.0, 2.0, 0.0]"
+
+Author: Axel NIATO
+Date: January 2026
+"""
+
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration

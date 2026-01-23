@@ -1,3 +1,21 @@
+"""
+rviz2.launch.py
+
+This ROS 2 launch file starts RViz2 with a configurable configuration file.
+
+The launch file allows specifying a custom RViz configuration file and whether
+to use simulation time.
+
+Usage:
+    ros2 launch pizibot_navigation rviz2.launch.py
+
+With custom config:
+    ros2 launch pizibot_navigation rviz2.launch.py rviz_config_file:=/path/to/config.rviz
+
+Author: Axel NIATO
+Date: January 2026
+"""
+
 from launch import LaunchDescription
 from launch_ros.actions import Node
 
@@ -11,7 +29,7 @@ def generate_launch_description():
     package_name = 'pizibot_navigation'
     use_sim_time = LaunchConfiguration('use_sim_time')
     
-    # Declare the RVIZ config file argument
+    # Declare the RViz config file argument
     rviz_config_file_arg = DeclareLaunchArgument(
         'rviz_config_file',
         default_value=os.path.join(get_package_share_directory(package_name), 'rviz', 'localization.rviz'),

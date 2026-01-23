@@ -20,7 +20,7 @@ Usage:
     ros2 launch pizibot_navigation full_localization.launch.py
 
 Author: Axel NIATO
-Date: 11/06/2025
+Date: January 2026
 """
 
 from launch import LaunchDescription
@@ -43,7 +43,7 @@ def generate_launch_description():
     
     map_arg = DeclareLaunchArgument(
         'map',
-        default_value=os.path.join(get_package_share_directory(package_name), 'map', 'world_test2.yaml'),
+        default_value=os.path.join(get_package_share_directory(package_name), 'map', 'world_test1.yaml'),
         description='Full path to the map to use for localization'
     )
     
@@ -101,7 +101,7 @@ def generate_launch_description():
     navigation = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(navigation_launch_path), 
         launch_arguments={'use_sim_time': 'true',
-                          'map_subscribe_trasient_local': 'true'}.items()
+                          'map_subscribe_transient_local': 'true'}.items()
     )
     
     rviz2 = IncludeLaunchDescription(
@@ -123,10 +123,10 @@ def generate_launch_description():
 
     return LaunchDescription([
         map_arg,
-        navigation,
         localization,
+        navigation,
         joystick_teleop,
         keyboard_teleop,
         rviz2,
-        publish_initial_pose
+        publish_initial_pose,
     ])

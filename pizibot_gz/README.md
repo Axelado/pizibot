@@ -157,6 +157,7 @@ This package completely replaces `pizibot_gazebo` as part of the **Pizibot migra
 - ✅ This package (`pizibot_gz`) is fully migrated to **ROS 2 Jazzy** and **Gazebo Harmonic**
 - ✅ `pizibot_description` - Migrated
 - ✅ `pizibot_teleop` - Migrated
+- ✅ `pizibot_navigation` - Migrated
 - ⏳ Other packages are pending migration (see main README for status)
 
 ### Migration Guide

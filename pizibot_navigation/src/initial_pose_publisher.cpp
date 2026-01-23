@@ -1,3 +1,14 @@
+/**
+ * @file initial_pose_publisher.cpp
+ * @brief ROS 2 node that publishes an initial pose estimate for AMCL localization
+ *
+ * This node publishes a PoseWithCovarianceStamped message to the /initialpose topic
+ * for 3 seconds at 10 Hz to ensure AMCL receives and processes the initial pose.
+ *
+ * @author Axel NIATO
+ * @date January 2026
+ */
+
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/pose_with_covariance_stamped.hpp"
 #include <vector>
@@ -7,9 +18,23 @@
 
 using namespace std::chrono_literals;
 
+/**
+ * @class InitialPosePublisher
+ * @brief Publishes an initial pose estimate to /initialpose topic
+ *
+ * This node reads an initial pose parameter [x, y, yaw] and publishes it
+ * to the /initialpose topic for AMCL localization. The pose is published
+ * repeatedly for 3 seconds to ensure reliable delivery.
+ */
 class InitialPosePublisher : public rclcpp::Node
 {
 public:
+    /**
+     * @brief Constructor that initializes the node and starts publishing
+     *
+     * Declares and reads the initial_pose parameter, validates it, and
+     * starts a timer to publish the pose for 3 seconds.
+     */
     InitialPosePublisher()
     : Node("initial_pose_publisher")
     {
@@ -24,34 +49,50 @@ public:
 
         publisher_ = this->create_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>("/initialpose", 1);
 
+        // Set the frame_id to 'map' for localization
         msg_.header.frame_id = "map";
+        
+        // Set position from parameters
         msg_.pose.pose.position.x = pose[0];
         msg_.pose.pose.position.y = pose[1];
         msg_.pose.pose.position.z = 0.0;
 
+        // Convert yaw to quaternion
         double yaw = pose[2];
+        msg_.pose.pose.orientation.x = 0.0;
+        msg_.pose.pose.orientation.y = 0.0;
         msg_.pose.pose.orientation.z = sin(yaw / 2.0);
         msg_.pose.pose.orientation.w = cos(yaw / 2.0);
 
-        // Optionally set a default covariance
-        msg_.pose.covariance[0] = 0.25;   // x
-        msg_.pose.covariance[7] = 0.25;   // y
-        msg_.pose.covariance[35] = 0.0685; // yaw
+        // Set default covariance values for AMCL
+        // Covariance matrix is 6x6, stored row-major
+        msg_.pose.covariance[0] = 0.25;   // x variance
+        msg_.pose.covariance[7] = 0.25;   // y variance
+        msg_.pose.covariance[35] = 0.0685; // yaw variance
 
-        // Start timer to publish for 3 seconds at 10 Hz
+        // Start timer to publish at 10 Hz for 3 seconds
         timer_ = this->create_wall_timer(
             100ms, std::bind(&InitialPosePublisher::timer_callback, this)
         );
         start_time_ = this->now();
-        RCLCPP_INFO(this->get_logger(), "InitialPosePublisher started, publishing for 3 seconds...");
+        
+        RCLCPP_INFO(this->get_logger(), 
+                    "InitialPosePublisher started: x=%.2f, y=%.2f, yaw=%.2f rad (publishing for 3 seconds...)",
+                    pose[0], pose[1], pose[2]);
     }
 
 private:
+    /**
+     * @brief Timer callback that publishes the pose and checks for timeout
+     *
+     * Publishes the initial pose message and shuts down the node after 3 seconds.
+     */
     void timer_callback()
     {
         auto now = this->now();
         msg_.header.stamp = now;
         publisher_->publish(msg_);
+        
         if ((now - start_time_).seconds() >= 3.0) {
             RCLCPP_INFO(this->get_logger(), "Finished publishing initial pose.");
             rclcpp::shutdown();
@@ -64,6 +105,9 @@ private:
     rclcpp::Time start_time_;
 };
 
+/**
+ * @brief Main function that initializes and spins the node
+ */
 int main(int argc, char ** argv)
 {
     rclcpp::init(argc, argv);
