@@ -17,7 +17,8 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, GroupAction, SetEnvironmentVariable
+from launch.actions import DeclareLaunchArgument, GroupAction, SetEnvironmentVariable, IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import LoadComposableNodes
@@ -190,5 +191,13 @@ def generate_launch_description():
     # Add the actions to launch all of the localiztion nodes
     ld.add_action(load_nodes)
     ld.add_action(load_composable_nodes)
+
+    # Add EKF for sensor fusion (odometry + IMU)
+    ekf_launch_path = os.path.join(package_name, 'launch', 'ekf.launch.py')
+    ekf = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(ekf_launch_path),
+        launch_arguments={'use_sim_time': use_sim_time}.items()
+    )
+    ld.add_action(ekf)
 
     return ld
