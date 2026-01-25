@@ -25,6 +25,28 @@ def generate_launch_description():
     )
     gazebo_world = LaunchConfiguration('gazebo_world')
 
+    x_pose_arg = DeclareLaunchArgument(
+        'x_pose',
+        default_value ='0.0',
+        description='robot x coordinate'
+    )
+    x_pose = LaunchConfiguration('x_pose') 
+    
+    y_pose_arg = DeclareLaunchArgument(
+        'y_pose',
+        default_value ='0.0',
+        description='robot y coordinate'
+    )
+    y_pose = LaunchConfiguration('y_pose') 
+    
+    z_pose_arg = DeclareLaunchArgument(
+        'z_pose',
+        default_value ='0.018',
+        description='robot z coordinate'
+    )
+    z_pose = LaunchConfiguration('z_pose') 
+    
+    
     description_path = get_package_share_directory(description_pkg)
 
     # Set Gazebo resource paths for mesh resolution
@@ -70,7 +92,9 @@ def generate_launch_description():
         arguments=[
             '-topic', 'robot_description',
             '-name', 'pizibot',
-            '-z', '0.018'
+            '-x', x_pose,
+            '-y', y_pose,
+            '-z', z_pose,
         ],
         output='screen'
     )
@@ -124,6 +148,9 @@ def generate_launch_description():
 
     return LaunchDescription([
         gazebo_world_arg,
+        x_pose_arg,
+        y_pose_arg,
+        z_pose_arg,
         set_gz_resource_path,
         set_gz_sim_resource_path,
         rsp,
