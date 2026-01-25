@@ -9,16 +9,6 @@ find_package(ament_cmake REQUIRED)
 find_package(pizibot_description REQUIRED)
 
 find_package(rclcpp REQUIRED)
-find_package(yaml-cpp REQUIRED)
-
-add_executable(yaml_modifier_node src/yaml_modifier_node.cpp)
-
-ament_target_dependencies(yaml_modifier_node rclcpp)
-
-target_link_libraries(yaml_modifier_node yaml-cpp)
-
-install(TARGETS yaml_modifier_node
-        DESTINATION lib/${PROJECT_NAME})
 
 install(
   DIRECTORY params launch worlds rviz
