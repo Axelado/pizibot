@@ -45,3 +45,10 @@
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "gz.msgs.CameraInfo"
   direction: GZ_TO_ROS
+
+# Semantic Segmentation Camera Topics
+# Note: Segmentation camera images are bridged via ros_gz_image in launch_sim.launch.py
+# Topics available:
+#   - /camera/semantic/labels_map   : Pixel-wise semantic labels
+#   - /camera/semantic/colored_map  : Color-coded visualization of semantic labels
+

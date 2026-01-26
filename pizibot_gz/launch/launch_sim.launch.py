@@ -125,11 +125,29 @@ def generate_launch_description():
         output='screen',
     )
 
-    # Bridge camera image topic
+    # Bridge camera image topic (RGB camera)
     gazebo_ros_image_bridge = Node(
         package='ros_gz_image',
         executable='image_bridge',
         arguments=['/camera/image_raw'],
+        output='screen',
+    )
+    
+    # Bridge semantic segmentation camera - labels map
+    # Provides pixel-wise semantic labels for scene understanding
+    gazebo_ros_labels_map_bridge = Node(
+        package='ros_gz_image',
+        executable='image_bridge',
+        arguments=['/camera/semantic/labels_map'],
+        output='screen',
+    )
+    
+    # Bridge semantic segmentation camera - colored visualization
+    # Provides color-coded visualization of semantic labels
+    gazebo_ros_colored_map_bridge = Node(
+        package='ros_gz_image',
+        executable='image_bridge',
+        arguments=['/camera/semantic/colored_map'],
         output='screen',
     )
 
@@ -158,5 +176,7 @@ def generate_launch_description():
         spawn_entity,
         gazebo_ros_bridge,
         gazebo_ros_image_bridge,
+        gazebo_ros_labels_map_bridge,
+        gazebo_ros_colored_map_bridge,
         twist_mux,
     ])

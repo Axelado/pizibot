@@ -67,7 +67,8 @@ The robot description includes:
 - **Caster Wheel** - Caster wheel for stability
 - **Sensors**:
   - LiDAR (RPLiDAR A1)
-  - Camera
+  - RGB Camera
+  - Segmentation Camera (semantic segmentation for simulation)
   - IMU
   - Odometry computation
 
@@ -84,6 +85,7 @@ The robot description includes:
 - `base_footprint` - Ground projection of the base
 - `lidar_link` - LiDAR sensor frame
 - `camera_link` - Camera sensor frame
+- `camera_link_optical` - Camera optical frame (for image data)
 - `imu_link` - IMU sensor frame
 - `left_wheel_link`, `right_wheel_link` - Wheel frames
 

@@ -96,8 +96,8 @@ pizibot_gz/
 - `robot_state_publisher` - Publishes robot state
 - `gz_sim` - Gazebo Harmonic simulator
 - `ros_gz_bridge` - ROS 2 ↔ Gazebo bridge
-- `ros_gz_image` - Bridge for camera images
-- `twist_mux` - Velocity command multiplexer (optional, currently disabled)
+- `ros_gz_image` - Bridge for camera images (RGB and semantic segmentation)
+- `twist_mux` - Velocity command multiplexer
 
 ## ROS Topics
 
@@ -105,6 +105,8 @@ pizibot_gz/
 - `/scan` - LiDAR scan (360 samples, 10 Hz)
 - `/camera/image_raw` - Raw camera image (1600x1200, 15 Hz)
 - `/camera/camera_info` - Camera calibration info
+- `/camera/semantic/labels_map` - Semantic segmentation labels map
+- `/camera/semantic/colored_map` - Semantic segmentation colored visualization
 - `/imu` - IMU data
 - `/joint_states` - Joint states (wheels)
 - `/odom` - Robot odometry

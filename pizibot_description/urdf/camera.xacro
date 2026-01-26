@@ -73,4 +73,29 @@
         </sensor>
     </gazebo>
 
+    <!-- Semantic Segmentation Camera Sensor for Gazebo Harmonic -->
+    <!-- Provides pixel-wise semantic labels for scene understanding in simulation -->
+    <!-- Publishes to /camera/semantic/labels_map and /camera/semantic/colored_map topics -->
+    <gazebo reference="camera_link">
+        <sensor name="segmentation_camera" type="segmentation">
+            <pose>0 0 0 0 0 0</pose>
+            <visualize>true</visualize>
+            <update_rate>${camera_update_rate}</update_rate>
+            <camera>
+                <horizontal_fov>${camera_horizontal_fov}</horizontal_fov>
+                <image>
+                    <width>${camera_width}</width>
+                    <height>${camera_height}</height>
+                </image>
+                <clip>
+                    <near>${camera_clip_near}</near>
+                    <far>${camera_clip_far}</far>
+                </clip>
+            </camera>
+            <always_on>1</always_on>
+            <topic>camera/semantic</topic>
+            <gz_frame_id>camera_link_optical</gz_frame_id>
+        </sensor>
+    </gazebo>
+
 </robot>

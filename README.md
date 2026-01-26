@@ -42,7 +42,6 @@ The following packages are **still based on ROS 2 Humble** and require migration
 ### Current Limitations
 
 - **Real Robot Testing**: Hardware interface packages are not yet Jazzy-compatible
-- **Computer Vision**: Not yet implemented
 - **Web Interface**: Not yet developed
 - **LCD Display Integration**: Not yet implemented
 
@@ -62,7 +61,7 @@ The following packages are **still based on ROS 2 Humble** and require migration
 - **Sensor Integration**: Support for LIDAR, cameras, and other sensors. **(Implemented)**
 - **SLAM**: Online mapping with SLAM Toolbox. **(Implemented)**
 - **Navigation**: ROS 2 Navigation (Nav2) for autonomous movement and path planning. **(Implemented)**
-- **Computer Vision**: Camera image capture and publishing. **(Implemented - Camera Publisher)**
+- **Computer Vision**: Camera image capture, publishing, and semantic segmentation in simulation. **(Implemented - Camera Publisher & Segmentation Camera)**
 - **Web Interface**: Remote control and monitoring via a web browser. **(Not yet implemented)**
 
 ## Launch Files
