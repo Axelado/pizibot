@@ -65,12 +65,14 @@ pizibot_gz/
 ├── CMakeLists.txt           # Build configuration
 ├── package.xml              # Package metadata
 ├── src/
-│   └── yaml_modifier_node.cpp  # Node for modifying YAML parameters
+│   ├── yaml_modifier_node.cpp  # Node for modifying YAML parameters
+│   └── dataset_saver.cpp       # Node for dataset collection (RGB + masks)
 ├── launch/
-│   └── launch_sim.launch.py # Main launch file
+│   ├── launch_sim.launch.py    # Main simulation launch file
+│   └── dataset_save.launch.py  # Dataset collection launch file
 ├── params/
-│   ├── sim_controllers.yaml # Controller parameters
-│   └── twist_mux.yaml       # Velocity command multiplexer
+│   ├── sim_controllers.yaml    # Controller parameters
+│   └── twist_mux.yaml          # Velocity command multiplexer
 ├── worlds/
 │   ├── industrial-warehouse.sdf  # Industrial warehouse environment (default)
 │   ├── world_minimal.sdf    # Minimal world for quick testing
@@ -98,6 +100,50 @@ pizibot_gz/
 - `ros_gz_bridge` - ROS 2 ↔ Gazebo bridge
 - `ros_gz_image` - Bridge for camera images (RGB and semantic segmentation)
 - `twist_mux` - Velocity command multiplexer
+- `dataset_saver` - Saves RGB images and binary masks for dataset collection
+
+## Dataset Collection
+
+The `dataset_saver` node synchronizes RGB and semantic images to generate a dataset of images and binary masks. Images are saved only when the robot has moved sufficiently (distance > 0.05m or rotation > 30°).
+
+### Launch dataset collection
+
+```bash
+ros2 launch pizibot_gz dataset_save.launch.py
+```
+
+### With custom parameters
+
+```bash
+ros2 launch pizibot_gz dataset_save.launch.py \
+  label:=1 \
+  topic_rgb:=/camera/image_raw \
+  topic_sem:=/camera/semantic/labels_map \
+  dataset_path:=/path/to/dataset
+```
+
+### Parameters
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `label` | `1` | Semantic class label (pixels with this label → black in mask) |
+| `topic_rgb` | `/camera/image_raw` | ROS2 topic for the RGB image |
+| `topic_sem` | `/camera/semantic/labels_map` | ROS2 topic for the semantic image |
+| `dataset_path` | `dataset` | Output folder path (creates `images/` and `masks/` subfolders) |
+
+### Output Structure
+
+```
+dataset/
+├── images/
+│   ├── 000000.png
+│   ├── 000001.png
+│   └── ...
+└── masks/
+    ├── 000000.png
+    ├── 000001.png
+    └── ...
+```
 
 ## ROS Topics
 

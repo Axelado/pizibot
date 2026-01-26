@@ -15,4 +15,31 @@ install(
   DESTINATION share/${PROJECT_NAME}
 )
 
+find_package(sensor_msgs REQUIRED)
+find_package(tf2_msgs)
+find_package(tf2)
+find_package(tf2_geometry_msgs REQUIRED)
+find_package(message_filters REQUIRED)
+find_package(cv_bridge REQUIRED)
+find_package(OpenCV REQUIRED)
+
+include_directories(
+  include
+  ${OpenCV_INCLUDE_DIRS}
+)
+
+add_executable(dataset_saver src/dataset_saver.cpp)
+ament_target_dependencies(dataset_saver 
+  rclcpp 
+  sensor_msgs
+  tf2_msgs
+  tf2
+  tf2_geometry_msgs
+  message_filters
+  cv_bridge
+) 
+target_link_libraries(dataset_saver ${OpenCV_LIBS})
+install(TARGETS dataset_saver
+        DESTINATION lib/${PROJECT_NAME})
+
 ament_package()

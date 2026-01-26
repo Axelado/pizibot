@@ -99,6 +99,14 @@ The following packages are **still based on ROS 2 Humble** and require migration
 
   > **Note:** Publishes camera images to the `camera/image_raw` topic. You can customize parameters like `camera_index`, `fps`, `width`, `height`.
 
+- **Dataset Collection – Simulation**:
+
+  ```bash
+  ros2 launch pizibot_gz dataset_save.launch.py
+  ```
+
+  > **Note:** Collects RGB images and binary masks from semantic segmentation. Images are saved when the robot moves (distance > 0.05m or rotation > 30°). Customize with parameters: `label`, `topic_rgb`, `topic_sem`, `dataset_path`.
+
 ## Getting Started
 
 1. **Clone the repository and build the workspace:**
