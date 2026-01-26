@@ -26,7 +26,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: LaserScan
   - Class: nav2_rviz_plugins/Navigation 2
     Name: Navigation 2
 Visualization Manager:
@@ -75,13 +75,41 @@ Visualization Manager:
           Value: true
         laser_frame:
           Value: false
+        left_wheel:
+          Value: true
+        map:
+          Value: true
+        odom:
+          Value: true
+        right_wheel:
+          Value: true
       Marker Scale: 1
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: false
       Tree:
-        {}
+        map:
+          odom:
+            base_link:
+              base_footprint:
+                {}
+              chassis:
+                back_caster_wheel:
+                  {}
+                camera_link:
+                  camera_link_optical:
+                    {}
+                camera_support_link:
+                  {}
+                front_caster_wheel:
+                  {}
+                laser_frame:
+                  {}
+                left_wheel:
+                  {}
+                right_wheel:
+                  {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -323,6 +351,7 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /clicked_point
+    - Class: nav2_rviz_plugins/GoalTool
   Transformation:
     Current:
       Class: rviz_default_plugins/TF

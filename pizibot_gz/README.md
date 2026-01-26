@@ -72,6 +72,8 @@ pizibot_gz/
 │   ├── sim_controllers.yaml # Controller parameters
 │   └── twist_mux.yaml       # Velocity command multiplexer
 ├── worlds/
+│   ├── industrial-warehouse.sdf  # Industrial warehouse environment (default)
+│   ├── world_minimal.sdf    # Minimal world for quick testing
 │   ├── world_test1.world    # Test world 1 (SDF)
 │   └── world_test2.world    # Test world 2 (SDF)
 └── rviz/
@@ -134,7 +136,9 @@ Configurable parameters in: `pizibot_teleop/params/joystick.yaml`
 
 ## Available Worlds
 
-- **world_test1.world** (default) - Simple test world
+- **industrial-warehouse.sdf** (default) - Industrial warehouse environment with shelves and obstacles
+- **world_minimal.sdf** - Minimal world for quick testing and debugging
+- **world_test1.world** - Simple test world
 - **world_test2.world** - World with obstacles
 
 ## Simulation Parameters

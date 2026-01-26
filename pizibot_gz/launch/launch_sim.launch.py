@@ -20,7 +20,7 @@ def generate_launch_description():
     # Arguments
     gazebo_world_arg = DeclareLaunchArgument(
         'gazebo_world',
-        default_value=os.path.join(pkg_path, 'worlds', 'world_test1.world'),
+        default_value=os.path.join(pkg_path, 'worlds', 'industrial-warehouse.sdf'),
         description='Full path to the world SDF file to use for simulation'
     )
     gazebo_world = LaunchConfiguration('gazebo_world')
@@ -41,7 +41,7 @@ def generate_launch_description():
     
     z_pose_arg = DeclareLaunchArgument(
         'z_pose',
-        default_value ='0.018',
+        default_value ='0.08',
         description='robot z coordinate'
     )
     z_pose = LaunchConfiguration('z_pose') 

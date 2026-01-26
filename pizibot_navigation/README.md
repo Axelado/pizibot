@@ -44,7 +44,9 @@ This package provides the complete navigation stack for the Pizibot robot, inclu
 Pre-built maps for different environments (`.pgm`, `.yaml`, `.posegraph` files):
 
 - `home_1`: Home environment map
-- `world_test1`: Test world map
+- `industrial-warehouse`: Industrial warehouse environment map
+- `world_test1`: Test world 1 map
+- `world_test2`: Test world 2 map
 
 ### RViz Configurations
 

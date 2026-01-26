@@ -43,7 +43,7 @@ def generate_launch_description():
     
     map_arg = DeclareLaunchArgument(
         'map',
-        default_value=os.path.join(get_package_share_directory(package_name), 'map', 'world_test1.yaml'),
+        default_value=os.path.join(get_package_share_directory(package_name), 'map', 'industrial-warehouse.yaml'),
         description='Full path to the map to use for localization'
     )
     
