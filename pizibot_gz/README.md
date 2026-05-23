@@ -99,7 +99,8 @@ pizibot_gz/
 - `gz_sim` - Gazebo Harmonic simulator
 - `ros_gz_bridge` - ROS 2 ↔ Gazebo bridge
 - `ros_gz_image` - Bridge for camera images (RGB and semantic segmentation)
-- `twist_mux` - Velocity command multiplexer
+- `twist_mux` - Velocity command multiplexer (outputs `TwistStamped`)
+- `twist_stamped_to_twist` - Converts `TwistStamped` → `Twist` for the Gazebo bridge (Gazebo DiffDrive only accepts `gz.msgs.Twist`)
 - `dataset_saver` - Saves RGB images and binary masks for dataset collection
 
 ## Dataset Collection
@@ -159,9 +160,12 @@ dataset/
 - `/tf` - Frame transforms
 
 ### For control
-- `/cmd_vel_gz` - Direct velocity command to Gazebo plugin (main input)
-- `/cmd_vel` - Secondary velocity command (navigation)
-- `/cmd_vel_joy` - Velocity command from joystick
+
+- `/cmd_vel_gz` (`geometry_msgs/msg/Twist`) - Direct velocity command to Gazebo bridge (output of `twist_stamped_to_twist`)
+- `/cmd_vel_out` (`geometry_msgs/msg/TwistStamped`) - Output of `twist_mux`, input of `twist_stamped_to_twist`
+- `/cmd_vel` (`geometry_msgs/msg/TwistStamped`) - Navigation velocity commands
+- `/cmd_vel_joy` (`geometry_msgs/msg/TwistStamped`) - Joystick velocity commands
+- `/cmd_vel_key` (`geometry_msgs/msg/TwistStamped`) - Keyboard velocity commands
 
 ## Joystick Teleoperation
 

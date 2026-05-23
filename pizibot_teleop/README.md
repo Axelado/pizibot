@@ -77,10 +77,12 @@ Configurable parameters in: `params/joystick.yaml`
 ## ROS Topics
 
 ### Published Topics
-- `/cmd_vel_key` - Keyboard velocity commands
-- `/cmd_vel_joy` - Joystick velocity commands
+
+- `/cmd_vel_key` (`geometry_msgs/msg/TwistStamped`) - Keyboard velocity commands
+- `/cmd_vel_joy` (`geometry_msgs/msg/TwistStamped`) - Joystick velocity commands
 
 ### Subscribed Topics
+
 - `/joy` - Joystick input (from `joy_node`)
 
 ## Configuration Files

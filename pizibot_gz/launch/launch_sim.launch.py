@@ -157,9 +157,14 @@ def generate_launch_description():
         executable='twist_mux',
         name='twist_mux',
         parameters=[twist_mux_params],
-        remappings=[
-            ('cmd_vel_out', 'cmd_vel_gz'),
-        ],
+        output='screen',
+    )
+
+    # Convert TwistStamped (twist_mux output) to Twist for the Gazebo bridge
+    twist_stamped_to_twist = Node(
+        package='pizibot_gz',
+        executable='twist_stamped_to_twist.py',
+        name='twist_stamped_to_twist',
         output='screen',
     )
 
@@ -179,4 +184,5 @@ def generate_launch_description():
         gazebo_ros_labels_map_bridge,
         gazebo_ros_colored_map_bridge,
         twist_mux,
+        twist_stamped_to_twist,
     ])

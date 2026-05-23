@@ -6,13 +6,18 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake REQUIRED)
-find_package(pizibot_description REQUIRED)
+find_package(ament_cmake_python REQUIRED)
 
 find_package(rclcpp REQUIRED)
 
 install(
   DIRECTORY params launch worlds rviz
   DESTINATION share/${PROJECT_NAME}
+)
+
+install(PROGRAMS
+  scripts/twist_stamped_to_twist.py
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 find_package(sensor_msgs REQUIRED)

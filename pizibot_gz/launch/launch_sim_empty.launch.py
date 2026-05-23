@@ -17,7 +17,6 @@ def generate_launch_description():
     pkg_path = get_package_share_directory(package_name)
     description_path = get_package_share_directory(description_pkg)
     
-    ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
     # Arguments
     gazebo_world_arg = DeclareLaunchArgument(
@@ -81,7 +80,6 @@ def generate_launch_description():
         set_gz_sim_resource_path,
         gazebo_world_arg,
         rsp,
-
         gz_sim,
         spawn_entity,
     ])

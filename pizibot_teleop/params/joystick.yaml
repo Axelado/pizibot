@@ -29,3 +29,5 @@ teleop_node:
     enable_button: 4  # LB button to enable teleoperation
     enable_turbo_button: 5  # RB button for turbo mode
 
+    publish_stamped_twist: true
+
