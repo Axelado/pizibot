@@ -52,11 +52,6 @@ This minimal launch only starts:
 ros2 launch pizibot_gz launch_sim.launch.py gazebo_world:=$(pwd)/install/pizibot_gz/share/pizibot_gz/worlds/world_test2.world
 ```
 
-### Use a prefix for multi-robot
-
-```bash
-ros2 launch pizibot_gz launch_sim.launch.py prefix:=robot1_
-```
 
 ## Package Structure
 
@@ -65,7 +60,6 @@ pizibot_gz/
 ├── CMakeLists.txt           # Build configuration
 ├── package.xml              # Package metadata
 ├── src/
-│   ├── yaml_modifier_node.cpp  # Node for modifying YAML parameters
 │   └── dataset_saver.cpp       # Node for dataset collection (RGB + masks)
 ├── launch/
 │   ├── launch_sim.launch.py    # Main simulation launch file
@@ -210,11 +204,8 @@ Configurable parameters in: `pizibot_teleop/params/joystick.yaml`
 This package completely replaces `pizibot_gazebo` as part of the **Pizibot migration to ROS 2 Jazzy and Gazebo Harmonic**.
 
 ### Package Status
-- ✅ This package (`pizibot_gz`) is fully migrated to **ROS 2 Jazzy** and **Gazebo Harmonic**
-- ✅ `pizibot_description` - Migrated
-- ✅ `pizibot_teleop` - Migrated
-- ✅ `pizibot_navigation` - Migrated
-- ⏳ Other packages are pending migration (see main README for status)
+
+All packages are fully migrated to **ROS 2 Jazzy**. See the [main README](../README.md) for the complete status table.
 
 ### Migration Guide
 

@@ -1,135 +1,94 @@
 # PIZIBOT
 
-**PIZIBOT** is a ROS 2 package for a two-wheeled mobile robot designed for navigation and computer vision.
+**PIZIBOT** is a ROS 2 Jazzy package for a two-wheeled mobile robot designed for navigation and computer vision.
 
-## Project Status
+## Migration Status
 
-🚀 **ROS 2 Jazzy Migration in Progress**
+✅ **All packages are fully migrated to ROS 2 Jazzy and Gazebo Harmonic.**
 
-The project is under active development with ongoing migration to **ROS 2 Jazzy** and **Gazebo Harmonic**.
-
-### Migration Status
-- ✅ **Migrated to Jazzy**:
-  - `pizibot_description` - Robot URDF and model definitions
-  - `pizibot_gz` - Gazebo Harmonic simulation (replaces `pizibot_gazebo`)
-  - `pizibot_teleop` - Keyboard and joystick teleoperation
-  - `pizibot_navigation` - SLAM and Nav2 navigation stack
-  - `pizibot_voice` - Voice control for room navigation
-  - `pizibot_vision` - Computer vision and camera publisher
-- ⏳ **Pending Migration**:
-  - `pizibot_hardware` - Real robot hardware interface and battery management
-
-Basic functionalities for robot description, control, SLAM, and navigation are now available.  
-You will find launch files for both simulation and real robot usage.
-
-## ⚠️ Known Limitations (Not Yet Ready)
-
-### Packages Not Yet Migrated to Jazzy
-
-The following packages are **still based on ROS 2 Humble** and require migration:
-
-#### 1. **pizibot_hardware** - Real Robot Interface
-- **Status**: Built for ROS 2 Humble
-- **Features developed**:
-  - Battery management and monitoring
-  - Motor control via hardware interface
-- **What's missing**:
-  - Jazzy compatibility updates
-  - Testing on real hardware with Jazzy
-  - Hardware dependencies verification
-- **Workaround**: Use only with ROS 2 Humble on real robot hardware
-
-### Current Limitations
-
-- **Real Robot Testing**: Hardware interface packages are not yet Jazzy-compatible
-- **Web Interface**: Not yet developed
-- **LCD Display Integration**: Not yet implemented
-
-### Recommended Usage
-
-- **🎮 For Simulation Testing**: Use `pizibot_description`, `pizibot_gz`, `pizibot_teleop`, `pizibot_navigation`, and `pizibot_voice` (all Jazzy-ready)
-- **🤖 For Real Robot**: Still requires ROS 2 Humble environment until `pizibot_hardware` is migrated
-- **🗺️ For Navigation/SLAM**: Use `pizibot_navigation` with Gazebo Harmonic simulation (Jazzy-compatible)
-- **🎙️ For Voice Control**: Use `pizibot_voice` for voice-activated room navigation (Jazzy-compatible)
-
-## Main Features
-
-- **General Robot Management**:
-  - **Battery Management**: Battery level monitoring and automatic safety actions. **(Implemented)**
-  - **LCD Display Integration**: 16x2 LCD for real-time robot status (battery, connection, etc.). **(Not yet implemented)**
-- **Motor Control**: Differential drive motor control. **(Implemented)**
-- **Sensor Integration**: Support for LIDAR, cameras, and other sensors. **(Implemented)**
-- **SLAM**: Online mapping with SLAM Toolbox. **(Implemented)**
-- **Navigation**: ROS 2 Navigation (Nav2) for autonomous movement and path planning. **(Implemented)**
-- **Computer Vision**: Camera image capture, publishing, and semantic segmentation in simulation. **(Implemented - Camera Publisher & Segmentation Camera)**
-- **Web Interface**: Remote control and monitoring via a web browser. **(Not yet implemented)**
-
-## Launch Files
-
-- **Simulation (Gazebo Harmonic - Jazzy)**:  
-  Launch the robot in Gazebo Harmonic with:
-
-  ```bash
-  ros2 launch pizibot_gz launch_sim.launch.py
-  ```
-  
-  > **Note:** `pizibot_gazebo` (Gazebo Classic) has been replaced by `pizibot_gz` (Gazebo Harmonic)
-
-- **Mapping (SLAM) – Simulation or Real Robot**:  
-
-  ```bash
-  ros2 launch pizibot_navigation full_mapping.launch.py
-  ```
-
-  > **Note:** You must start the simulation or the real robot before running this launch file.
-
-- **Localization & Navigation – Simulation or Real Robot**:  
-
-  ```bash
-  ros2 launch pizibot_navigation full_localization.launch.py
-  ```
-
-  > **Note:** You must start the simulation or the real robot before running this launch file.
-
-- **Camera Publisher – Simulation or Real Robot**:  
-
-  ```bash
-  ros2 launch pizibot_vision camera.launch.py
-  ```
-
-  > **Note:** Publishes camera images to the `camera/image_raw` topic. You can customize parameters like `camera_index`, `fps`, `width`, `height`.
-
-- **Dataset Collection – Simulation**:
-
-  ```bash
-  ros2 launch pizibot_gz dataset_save.launch.py
-  ```
-
-  > **Note:** Collects RGB images and binary masks from semantic segmentation. Images are saved when the robot moves (distance > 0.05m or rotation > 30°). Customize with parameters: `label`, `topic_rgb`, `topic_sem`, `dataset_path`.
+| Package | Description | Status |
+|---------|-------------|--------|
+| `pizibot_description` | Robot URDF and model definitions | ✅ Jazzy |
+| `pizibot_hardware` | Real robot launch and configuration | ✅ Jazzy |
+| `pizibot_hw_interface` | Hardware interface plugin (ESP32 via serial) | ✅ Jazzy |
+| `pizibot_gz` | Gazebo Harmonic simulation | ✅ Jazzy |
+| `pizibot_teleop` | Keyboard and joystick teleoperation | ✅ Jazzy |
+| `pizibot_navigation` | SLAM and Nav2 navigation stack | ✅ Jazzy |
+| `pizibot_voice` | Voice control for room navigation | ✅ Jazzy |
+| `pizibot_vision` | Computer vision and camera publisher | ✅ Jazzy |
 
 ## Getting Started
 
-1. **Clone the repository and build the workspace:**
+```bash
+# Clone and build
+cd ~/pizi_ws/src
+git clone <this-repo>
+cd ..
+rosdep install --from-paths src --ignore-src -r -y
+colcon build --symlink-install
+source install/setup.bash
+```
 
-    ```bash
-    cd ~/ROS/pizi_ws/src
-    git clone <this-repo>
-    cd ..
-    rosdep install --from-paths src --ignore-src -r -y
-    colcon build
-    source install/setup.bash
-    ```
 
-2. **Start the simulation or connect your real robot.**
+## Launch Files
 
-3. **Use the provided launch files for mapping or localization/navigation as described above.**
+### Real Robot
 
-## Documentation
+```bash
+ros2 launch pizibot_hardware launch_real_robot.launch.py
+```
 
-- Each launch file contains detailed comments and usage instructions.
-- For more details on configuration and usage, see the documentation in each package.
+Starts: RPLidar · robot_state_publisher · controller_manager · diff_drive_controller · joint_state_broadcaster · twist_mux · ESP32-CAM stream
 
----
+### Simulation (Gazebo Harmonic)
 
-**Contributions are welcome!**  
-Feel free to open issues or submit pull requests.
+```bash
+ros2 launch pizibot_gz launch_sim.launch.py
+```
+
+### Mapping (SLAM)
+
+```bash
+# Start robot first (real or simulation), then:
+ros2 launch pizibot_navigation full_mapping.launch.py
+```
+
+### Localization and Navigation
+
+```bash
+ros2 launch pizibot_navigation full_localization.launch.py map:=/path/to/map.yaml
+```
+
+### Camera Publisher
+
+```bash
+ros2 launch pizibot_vision camera.launch.py
+```
+
+### Dataset Collection (simulation)
+
+```bash
+ros2 launch pizibot_gz dataset_save.launch.py
+```
+
+## Main Features
+
+- **Motor Control**: Differential drive via `ros2_control` + ESP32 hardware interface
+- **Sensor Integration**: RPLidar A1, ESP32-CAM, IMU, battery monitoring
+- **SLAM**: Online mapping with SLAM Toolbox
+- **Navigation**: Autonomous movement and path planning with Nav2
+- **Computer Vision**: Camera image capture, publishing, and semantic segmentation in simulation
+- **Voice Control**: Voice-activated room navigation
+
+## Known Limitations
+
+- **Web Interface**: Not yet implemented
+- **LCD Display Integration**: Not yet implemented
+
+## Author
+
+Axel NIATO <axelniato@gmail.com>
+
+## License
+
+Apache-2.0

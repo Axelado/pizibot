@@ -3,21 +3,24 @@
 <package format="3">
   <name>pizibot_hardware</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="axelniato@gmail.com">axel</maintainer>
-  <license>TODO: License declaration</license>
+  <description>Real hardware launch and configuration for Pizibot robot</description>
+  <maintainer email="axelniato@gmail.com">Axel NIATO</maintainer>
+  <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>ament_cmake_python</buildtool_depend>
 
-
-  <depend>rclcpp</depend>
-  <depend>sensor_msgs</depend>
-
   <depend>rclpy</depend>
 
+  <exec_depend>pizibot_description</exec_depend>
+  <exec_depend>pizibot_hw_interface</exec_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>diff_drive_controller</exec_depend>
+  <exec_depend>joint_state_broadcaster</exec_depend>
+  <exec_depend>rplidar_ros</exec_depend>
+  <exec_depend>twist_mux</exec_depend>
   <exec_depend>cv_bridge</exec_depend>
-  <exec_depend>opencv-python</exec_depend>
+  <exec_depend>python3-opencv</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
