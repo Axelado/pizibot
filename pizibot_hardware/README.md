@@ -105,7 +105,7 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 | `/joint_states` | `JointState` | Wheel joint states |
 | `/scan` | `LaserScan` | RPLidar scan |
 | `/camera/image_raw` | `Image` | ESP32-CAM stream |
-| `/imu/data` | `Imu` | IMU data (from ESP32 via hw_interface) |
+| `/imu` | `Imu` | IMU data (from ESP32 via hw_interface) |
 | `/battery_state` | `BatteryState` | Battery (from ESP32 via hw_interface) |
 
 ## Dependencies
