@@ -2,43 +2,48 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
     <!-- Robot property -->
-    <xacro:property name="robot_diameter" value="0.300" />
-    <xacro:property name="robot_height" value="0.108" />
+    <xacro:property name="robot_diameter" value="0.290" />
+    <!-- with wheel  -->
+    <xacro:property name="robot_height" value="0.103" />
     <xacro:property name="robot_mass" value="1" />
 
-    <xacro:property name="wheel_width" value="0.027" />
+    <xacro:property name="wheel_width" value="0.04" />
     <xacro:property name="wheel_diameter" value="0.08" />
     <xacro:property name="wheel_mass" value="0.1" />
-    <xacro:property name="wheel_separation" value="0.273" />
-    <!-- Max wheel velocity property in rad/s (125 RPM ≈ 13.09 rad/s) -->
-    <xacro:property name="max_wheel_velocity" value="13.09" />
+    <xacro:property name="wheel_separation" value="0.29" />
+    <xacro:property name="wheel_y_offset" value="0.01969" />
+    
+    <!-- Max wheel velocity property in rad/s (4.6 rad/s RPM ≈ 43.93 RPM) -->
+    <xacro:property name="max_wheel_velocity" value="4.6" />
     <!-- Max wheel effort in Nm -->
     <xacro:property name="max_wheel_effort" value="40" />
 
-    <xacro:property name="ground_clearance" value="0.018" />
+    <xacro:property name="ground_clearance" value="${0.057-(caster_diameter/2)}" />
 
-    <xacro:property name="caster_wheel_distance" value="0.120" />
-    <xacro:property name="caster_wheel_diameter" value="${0.007+ground_clearance*2}" />
-    <xacro:property name="caster_wheel_mass" value="0.1" />
+    <xacro:property name="caster_x_offset" value="0.09" />
+    <xacro:property name="caster_diameter" value="0.016" />
+    <xacro:property name="caster_mass" value="0.1" />
 
     <!-- RPLIDAR A1M8 properties -->
-    <xacro:property name="lidar_distance" value="0.084" /> <!-- Distance from chassis origin to lidar origin on X axis -->
-    <xacro:property name="lidar_diameter" value="0.098" /> <!-- support_lidar length -->
-    <xacro:property name="lidar_length" value="0.062" /> <!-- lidar height + lidar support height -->
-    <xacro:property name="lidar_origin_height_offset" value="0.007" /> <!-- the frame origin is at 7 mm from the top of the lidar -->
-    <xacro:property name="lidar_mass" value="0.0" /> <!-- 0 because his mass is included in the robot mass -->
+    <xacro:property name="lidar_x_offset" value="0.055" />
+    <!-- Distance from chassis origin to lidar origin on X axis -->
+    <xacro:property name="lidar_diameter" value="0.098" />
+    <!-- support_lidar length -->
+    <xacro:property name="lidar_height" value="0.062" />
+    <!-- lidar height + lidar support height -->
+    <xacro:property name="lidar_mass" value="0.1" />
     <xacro:property name="lidar_update_rate" value="10" />
     <xacro:property name="lidar_samples" value="360" />
     <xacro:property name="lidar_min_range" value="0.15" />
     <xacro:property name="lidar_max_range" value="12.0" />
 
     <!-- Camera properties -->
-    <xacro:property name="camera_base_height" value="0.097" />
-    <xacro:property name="camera_distance" value="0.194" />
+    <xacro:property name="camera_z_offset" value="0.080" />
+    <xacro:property name="camera_x_offset" value="${robot_diameter/2}" />
     <xacro:property name="camera_update_rate" value="15" />
     <xacro:property name="camera_horizontal_fov" value="1.089" />
-    <xacro:property name="camera_width" value="1600" />
-    <xacro:property name="camera_height" value="1200" />
+    <xacro:property name="camera_image_width" value="1600" />
+    <xacro:property name="camera_image_height" value="1200" />
     <xacro:property name="camera_clip_near" value="0.05" />
     <xacro:property name="camera_clip_far" value="8.0" />
 

@@ -4,13 +4,13 @@
     <!-- prefix removed: names are unprefixed now -->
     <xacro:arg name="sim_mode" default="false"/>
 
-    <xacro:include filename="material_colors.xacro" />
-    <xacro:include filename="inertial_macros.xacro" />
-    <xacro:include filename="dimensions.xacro" />
-    <xacro:include filename="pizibot_macro.xacro" />
-    <xacro:include filename="lidar.xacro" />
-    <xacro:include filename="control.xacro" />
-    <xacro:include filename="camera.xacro" />
+    <xacro:include filename="$(find pizibot_description)/urdf/material_colors.xacro" />
+    <xacro:include filename="$(find pizibot_description)/urdf/inertial_macros.xacro" />
+    <xacro:include filename="$(find pizibot_description)/urdf/dimensions.xacro" />
+    <xacro:include filename="$(find pizibot_description)/urdf/pizibot_macro.xacro" />
+    <xacro:include filename="$(find pizibot_description)/urdf/lidar.xacro" />
+    <xacro:include filename="$(find pizibot_description)/urdf/control.xacro" />
+    <xacro:include filename="$(find pizibot_description)/urdf/camera.xacro" />
 
     <xacro:pizibot/>
     

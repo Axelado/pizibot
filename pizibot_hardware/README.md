@@ -63,9 +63,9 @@ pizibot_hardware/
 ### Controller parameters (`param/robot_controllers.yaml`)
 
 | Parameter | Value |
-|-----------|-------|
-| `wheel_separation` | 0.17 m |
-| `wheel_radius` | 0.033 m |
+| --------- | ----- |
+| `wheel_separation` | 0.29 m |
+| `wheel_radius` | 0.04 m |
 | `update_rate` | 50 Hz |
 | `cmd_vel_timeout` | 0.5 s |
 | `enable_odom_tf` | true |
@@ -75,7 +75,7 @@ pizibot_hardware/
 All sources publish `TwistStamped` (`use_stamped: true`).
 
 | Source | Topic | Priority |
-|--------|-------|----------|
+| ------ | ----- | -------- |
 | Keyboard | `cmd_vel_key` | 22 |
 | Joystick | `cmd_vel_joy` | 21 |
 | Web UI | `cmd_vel_web` | 20 |
@@ -114,7 +114,7 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 ## ROS Topics
 
 | Topic | Type | Description |
-|-------|------|-------------|
+| ----- | ---- | ----------- |
 | `/diff_drive_controller/cmd_vel` | `TwistStamped` | Velocity command input (twist_mux output) |
 | `/diff_drive_controller/odom` | `Odometry` | Wheel odometry |
 | `/joint_states` | `JointState` | Wheel joint states |

@@ -4,26 +4,35 @@
     <joint name="laser_joint" type="fixed">
         <parent link="chassis"/>
         <child link="laser_frame"/>
-        <origin xyz="0 ${lidar_distance} ${robot_height+lidar_length}" rpy="0 0 ${3*pi/2}"/>
+        <origin xyz="0 -${lidar_x_offset} ${robot_height+lidar_height}" rpy="0 0 ${pi/2}"/>
     </joint>
 
     <link name="laser_frame">
-        <visual>
-            <origin xyz="0 0 -${lidar_origin_height_offset}" rpy="0 0 0"/>
+        <collision>
+            <origin xyz="0 0 -${lidar_height/2}" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://pizibot_description/meshes/lidar_with_support.stl" scale="0.001 0.001 0.001"/>
+                <cylinder radius="${lidar_diameter/2}" length="${lidar_height}"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_cylinder mass="${lidar_mass}" length="${lidar_height}" radius="${lidar_diameter/2}">
+            <origin xyz="0 0 -${lidar_height/2}" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+
+    <joint name="laser_visual_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="laser_visual"/>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi}"/>
+    </joint>
+
+    <link name="laser_visual">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://pizibot_description/meshes/rplidar_a1.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="gray"/>
         </visual>
-        <collision>
-            <origin xyz="0 0 -${lidar_length/2}" rpy="0 0 0"/>
-            <geometry>
-                <cylinder radius="${lidar_diameter/2}" length="${lidar_length}"/>
-            </geometry>
-        </collision>
-        <xacro:inertial_cylinder mass="${lidar_mass}" length="${lidar_length}" radius="${lidar_diameter/2}">
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-        </xacro:inertial_cylinder>
     </link>
 
     <!-- Gazebo specific settings for the lidar -->

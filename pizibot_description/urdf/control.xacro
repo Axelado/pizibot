@@ -4,7 +4,7 @@
     
     <!-- Gazebo Harmonic simulation  -->
     <xacro:if value="$(arg sim_mode)">
-        <xacro:include filename="gazebo_config.xacro" /> 
+        <xacro:include filename="$(find pizibot_description)/urdf/gazebo_config.xacro" />
     </xacro:if>
 
     <!-- Real hardware control block -->
@@ -15,8 +15,8 @@
                 <param name="serial_port">/dev/ttyESP32</param>
                 <param name="baud_rate">115200</param>
                 <param name="encoder_ppr">1320</param>
-                <param name="wheel_radius">0.033</param>
-                <param name="wheel_separation">0.17</param>
+                <param name="wheel_radius">0.04</param>
+                <param name="wheel_separation">0.29</param>
             </hardware>
 
             <joint name="left_wheel_joint">

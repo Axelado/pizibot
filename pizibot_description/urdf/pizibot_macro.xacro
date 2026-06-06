@@ -23,14 +23,6 @@
         </joint>
 
         <link name="chassis">
-            <visual>
-                <origin xyz="0 0 0" rpy="0 0 ${pi}"/>
-                <geometry>
-                    <mesh filename="package://pizibot_description/meshes/chassis.stl" scale="0.001 0.001 0.001"/>
-                </geometry>
-                <material name="white"/>
-            </visual>
-
             <collision>
                 <origin xyz="0 0 ${robot_height/2}" rpy="0 0 0"/>
                 <geometry>
@@ -39,28 +31,44 @@
             </collision>
 
             <xacro:inertial_cylinder mass="${robot_mass}" length="${robot_height}" radius="${robot_diameter/2}">
-                <origin xyz="${robot_diameter/2} 0 ${robot_height/2}" rpy="0 0 0"/>
+                <origin xyz="0 0 ${robot_height/2}" rpy="0 0 0"/>
             </xacro:inertial_cylinder>
         </link>
 
-        <gazebo reference="chassis">
-            <material>Gazebo/SkyBlue</material>
+        <joint name="chassis_visual_joint" type="fixed">
+            <parent link="base_link"/>
+            <child link="chassis_visual"/>
+            <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}"/>
+        </joint>
+
+        <link name="chassis_visual">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0 "/>
+                <geometry>
+                    <mesh filename="package://pizibot_description/meshes/robot_chassis.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="white"/>
+            </visual>
+        </link>
+
+        <gazebo reference="chassis_visual">
+            <material>Gazebo/White</material>
         </gazebo>
 
         <!-- left_wheel -->
         <joint name="left_wheel_joint" type="continuous">
             <parent link="chassis"/>
             <child link="left_wheel"/>
-            <origin xyz="${-((robot_diameter/2)-(wheel_width/2))} 0 ${ground_clearance}" rpy="-${pi/2} 0 ${pi/2}"/>
+            <origin xyz="${-((robot_diameter/2)-(wheel_width/2))} 0 -${wheel_y_offset}" rpy="-${pi/2} 0 ${pi/2}"/>
             <axis xyz="0 0 1"/>
             <limit effort="${max_wheel_effort}" velocity="${max_wheel_velocity}"/>
         </joint>
 
         <link name="left_wheel">
             <visual>
-                <origin xyz="0 0 0" rpy="0 ${pi} 0"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://pizibot_description/meshes/left_wheel.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://pizibot_description/meshes/wheel.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="red"/>
             </visual>
@@ -76,6 +84,7 @@
             </xacro:inertial_cylinder>
         </link>
 
+
         <gazebo reference="left_wheel">
             <material>Gazebo/Red</material>
         </gazebo>
@@ -85,7 +94,7 @@
         <joint name="right_wheel_joint" type="continuous">
             <parent link="chassis"/>
             <child link="right_wheel"/>
-            <origin xyz="${((robot_diameter/2)-(wheel_width/2))} 0 ${ground_clearance}" rpy="-${pi/2} 0 -${pi/2}"/>
+            <origin xyz="${((robot_diameter/2)-(wheel_width/2))} 0 -${wheel_y_offset}" rpy="-${pi/2} 0 -${pi/2}"/>
             <axis xyz="0 0 -1"/>
             <limit effort="${max_wheel_effort}" velocity="${max_wheel_velocity}"/>
         </joint>
@@ -93,7 +102,7 @@
         <link name="right_wheel">
             <visual>
                 <geometry>
-                    <mesh filename="package://pizibot_description/meshes/right_wheel.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://pizibot_description/meshes/wheel.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="red"/>
             </visual>
@@ -113,33 +122,35 @@
             <material>Gazebo/Red</material>
         </gazebo>
 
+
+
         <!-- FRONT CASTER WHEEL -->
-        <joint name="front_caster_wheel_joint" type="fixed">
+        <joint name="front_caster_joint" type="fixed">
             <parent link="chassis"/>
-            <child link="front_caster_wheel"/>
-            <origin xyz="0 -${caster_wheel_distance} 0" rpy="0 0 0"/>
+            <child link="front_caster"/>
+            <origin xyz="0 ${caster_x_offset} -${ground_clearance}" rpy="0 0 0"/>
         </joint>
 
-        <link name="front_caster_wheel">
+        <link name="front_caster">
             <visual>
                 <geometry>
-                    <sphere radius="${caster_wheel_diameter/2}" />
+                    <sphere radius="${caster_diameter/2}" />
                 </geometry>
                 <material name="black"/>
             </visual>
 
             <collision>
                 <geometry>
-                    <sphere radius="${caster_wheel_diameter/2}" />
+                    <sphere radius="${caster_diameter/2}" />
                 </geometry>
             </collision>
 
-            <xacro:inertial_sphere mass="${caster_wheel_mass}" radius="${caster_wheel_diameter/2}">
+            <xacro:inertial_sphere mass="${caster_mass}" radius="${caster_diameter/2}">
                 <origin xyz="0 0 0" rpy="0 0 0"/>
             </xacro:inertial_sphere>
         </link>
 
-        <gazebo reference="front_caster_wheel">
+        <gazebo reference="front_caster">
             <material>Gazebo/Black</material>
             <mu1 value="0.001"/>
             <mu2 value="0.001"/>
@@ -147,36 +158,67 @@
 
 
         <!-- BACK CASTER WHEEL -->
-        <joint name="back_caster_wheel_joint" type="fixed">
+        <joint name="back_caster_joint" type="fixed">
             <parent link="chassis"/>
-            <child link="back_caster_wheel"/>
-            <origin xyz="0 ${caster_wheel_distance} 0" rpy="0 0 0"/>
+            <child link="back_caster"/>
+            <origin xyz="0 -${caster_x_offset} -${ground_clearance}" rpy="0 0 0"/>
         </joint>
 
-        <link name="back_caster_wheel">
+        <link name="back_caster">
             <visual>
                 <geometry>
-                    <sphere radius="${caster_wheel_diameter/2}" />
+                    <sphere radius="${caster_diameter/2}" />
                 </geometry>
                 <material name="black"/>
             </visual>
 
             <collision>
                 <geometry>
-                    <sphere radius="${caster_wheel_diameter/2}" />
+                    <sphere radius="${caster_diameter/2}" />
                 </geometry>
             </collision>
 
-            <xacro:inertial_sphere mass="${caster_wheel_mass}" radius="${caster_wheel_diameter/2}">
+            <xacro:inertial_sphere mass="${caster_mass}" radius="${caster_diameter/2}">
                 <origin xyz="0 0 0" rpy="0 0 0"/>
             </xacro:inertial_sphere>
         </link>
-
-        <gazebo reference="back_caster_wheel">
+        <gazebo reference="back_caster">
             <material>Gazebo/Black</material>
             <mu1 value="0.001"/>
             <mu2 value="0.001"/>
         </gazebo>
+
+        <!-- FRONT CASTER CYLINDER -->
+        <joint name="front_caster_cylinder_joint" type="fixed">
+            <parent link="chassis"/>
+            <child link="front_caster_cylinder"/>
+            <origin xyz="0 ${caster_x_offset} 0" rpy="0 0 0"/>
+        </joint>
+
+        <link name="front_caster_cylinder">
+            <collision>
+                <origin xyz="0 0 -${ground_clearance/2}" rpy="0 0 0 "/>
+                <geometry>
+                    <cylinder length="${ground_clearance}" radius="${caster_diameter/2}" />
+                </geometry>
+            </collision>
+        </link>
+
+        <!-- BACK CASTER CYLINDER -->
+        <joint name="back_caster_cylinder_joint" type="fixed">
+            <parent link="chassis"/>
+            <child link="back_caster_cylinder"/>
+            <origin xyz="0 -${caster_x_offset} 0" rpy="0 0 0"/>
+        </joint>
+
+        <link name="back_caster_cylinder">
+            <collision>
+                <origin xyz="0 0 -${ground_clearance/2}" rpy="0 0 0 "/>
+                <geometry>
+                    <cylinder length="${ground_clearance}" radius="${caster_diameter/2}" />
+                </geometry>
+            </collision>
+        </link>
 
     </xacro:macro>
 </robot>
