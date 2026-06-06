@@ -5,7 +5,7 @@ twist_mux:
       navigation:
         topic   : cmd_vel
         timeout : 0.5
-        priority: 20
+        priority: 19
       joystick:
         topic   : cmd_vel_joy
         timeout : 0.5
@@ -13,8 +13,12 @@ twist_mux:
       visual_tracking:
         topic   : cmd_vel_tracker
         timeout : 0.5
-        priority: 10
+        priority: 18
       keyboard:
         topic   : cmd_vel_key
         timeout : 0.5
         priority: 22
+      web:
+        topic   : cmd_vel_web
+        timeout : 0.5
+        priority: 20

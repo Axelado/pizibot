@@ -6,17 +6,15 @@ ROS 2 Jazzy simulation package for the Pizibot robot using **Gazebo Harmonic** (
 
 This package is the successor of `pizibot_gazebo` (based on Gazebo Classic, which is end-of-life). It provides complete simulation of the Pizibot robot with:
 
-- **Gazebo Harmonic (gz-sim)** - Next-generation simulator
-- **ROS 2 Jazzy** - Compatible ROS 2 distribution
-- **Robot Control** - Differential drive controllers and state publishers
-- **ROS-Gazebo Bridges** - Complete integration via `ros_gz_bridge`
+- **Gazebo Harmonic (gz-sim)** — next-generation simulator
+- **ROS 2 Jazzy** — compatible ROS 2 distribution
+- **Robot Control** — differential drive controllers and state publishers
+- **ROS-Gazebo Bridges** — complete integration via `ros_gz_bridge`
 
 ## Dependency Installation
 
 ```bash
-sudo apt install -y ros-jazzy-ros-gz
-sudo apt install -y ros-jazzy-ros-gz-sim
-sudo apt install -y ros-jazzy-ros-gz-bridge
+sudo apt install -y ros-jazzy-ros-gz ros-jazzy-ros-gz-sim ros-jazzy-ros-gz-bridge
 ```
 
 ## Usage
@@ -25,11 +23,18 @@ sudo apt install -y ros-jazzy-ros-gz-bridge
 
 ```bash
 source /opt/ros/jazzy/setup.bash
-colcon build
+colcon build --symlink-install
 source install/setup.bash
-
 ros2 launch pizibot_gz launch_sim.launch.py
 ```
+
+With the web remote interface:
+
+```bash
+ros2 launch pizibot_gz launch_sim.launch.py enable_remote_ui:=true
+```
+
+Open `http://localhost:3000` in a browser or on a smartphone on the same LAN.
 
 ### Launch with empty world (simulator testing)
 
@@ -40,66 +45,117 @@ ros2 launch pizibot_gz launch_sim_empty.launch.py
 ```
 
 This minimal launch only starts:
+
 - Gazebo Harmonic simulator with an empty world
 - Robot state publisher (publishes URDF)
 - Robot spawner (spawns the robot entity)
 
-**Use case**: Debug simulator physics, test entity spawning, or verify URDF without the overhead of world content and Gazebo-ROS bridges.
+**Use case**: debug simulator physics, test entity spawning, or verify URDF without the overhead of world content and Gazebo-ROS bridges.
 
 ### Launch with a different world
 
 ```bash
-ros2 launch pizibot_gz launch_sim.launch.py gazebo_world:=$(pwd)/install/pizibot_gz/share/pizibot_gz/worlds/world_test2.world
+ros2 launch pizibot_gz launch_sim.launch.py \
+  gazebo_world:=$(pwd)/install/pizibot_gz/share/pizibot_gz/worlds/world_test2.world
 ```
 
+### Launch arguments
+
+| Argument          | Default                        | Description                                          |
+|-------------------|--------------------------------|------------------------------------------------------|
+| `gazebo_world`    | `industrial-warehouse.sdf`     | Full path to the SDF world file                      |
+| `enable_remote_ui`| `false`                        | Launch rosbridge + web_video_server + HTTP server    |
 
 ## Package Structure
 
-```
+```text
 pizibot_gz/
-├── CMakeLists.txt           # Build configuration
-├── package.xml              # Package metadata
+├── CMakeLists.txt
+├── package.xml
 ├── src/
-│   └── dataset_saver.cpp       # Node for dataset collection (RGB + masks)
+│   └── dataset_saver.cpp           # Node for dataset collection (RGB + masks)
 ├── launch/
-│   ├── launch_sim.launch.py    # Main simulation launch file
-│   └── dataset_save.launch.py  # Dataset collection launch file
+│   ├── launch_sim.launch.py        # Main simulation launch file
+│   └── dataset_save.launch.py      # Dataset collection launch file
 ├── params/
-│   ├── sim_controllers.yaml    # Controller parameters
-│   └── twist_mux.yaml          # Velocity command multiplexer
+│   ├── sim_controllers.yaml        # Controller parameters
+│   └── twist_mux.yaml              # Velocity command multiplexer
 ├── worlds/
-│   ├── industrial-warehouse.sdf  # Industrial warehouse environment (default)
-│   ├── world_minimal.sdf    # Minimal world for quick testing
-│   ├── world_test1.world    # Test world 1 (SDF)
-│   └── world_test2.world    # Test world 2 (SDF)
+│   ├── industrial-warehouse.sdf    # Industrial warehouse (default)
+│   ├── world_minimal.sdf           # Minimal world for quick testing
+│   ├── world_test1.world           # Test world 1
+│   └── world_test2.world           # Test world 2
 └── rviz/
-    └── sim_viz.rviz         # RViz configuration
+    └── sim_viz.rviz                # RViz configuration
 ```
 
 ## Differences from pizibot_gazebo
 
-| Aspect | pizibot_gazebo (Gazebo Classic) | pizibot_gz (Gazebo Harmonic) |
-|--------|--------------------------------|------------------------------|
-| Simulator | Gazebo Classic 11 (EOL) | Gazebo Harmonic 8.x |
-| ROS 2 | Humble | Jazzy |
-| Package launcher | gazebo_ros | ros_gz_sim |
-| Entity spawner | gazebo_ros/spawn_entity.py | ros_gz_sim/create |
-| Bridging | Gazebo Plugin | ros_gz_bridge (external) |
-| Performance | Legacy | Improved |
+| Aspect           | pizibot_gazebo (Gazebo Classic) | pizibot_gz (Gazebo Harmonic) |
+|------------------|---------------------------------|------------------------------|
+| Simulator        | Gazebo Classic 11 (EOL)         | Gazebo Harmonic 8.x          |
+| ROS 2            | Humble                          | Jazzy                        |
+| Package launcher | gazebo_ros                      | ros_gz_sim                   |
+| Entity spawner   | gazebo_ros/spawn_entity.py      | ros_gz_sim/create            |
+| Bridging         | Gazebo Plugin                   | ros_gz_bridge (external)     |
 
 ## Available Nodes
 
-- `robot_state_publisher` - Publishes robot state
-- `gz_sim` - Gazebo Harmonic simulator
-- `ros_gz_bridge` - ROS 2 ↔ Gazebo bridge
-- `ros_gz_image` - Bridge for camera images (RGB and semantic segmentation)
-- `twist_mux` - Velocity command multiplexer (outputs `TwistStamped`)
-- `twist_stamped_to_twist` - Converts `TwistStamped` → `Twist` for the Gazebo bridge (Gazebo DiffDrive only accepts `gz.msgs.Twist`)
-- `dataset_saver` - Saves RGB images and binary masks for dataset collection
+- `robot_state_publisher` — publishes robot state
+- `gz_sim` — Gazebo Harmonic simulator
+- `ros_gz_bridge` — ROS 2 ↔ Gazebo bridge
+- `ros_gz_image` — bridge for camera images (RGB and semantic segmentation)
+- `twist_mux` — velocity command multiplexer (outputs `TwistStamped`)
+- `twist_stamped_to_twist` — converts `TwistStamped` → `Twist` for the Gazebo bridge
+- `dataset_saver` — saves RGB images and binary masks for dataset collection
+
+## ROS Topics
+
+### Published by simulation
+
+| Topic                          | Type          | Description                           |
+| ------------------------------ | ------------- | ------------------------------------- |
+| `/scan`                        | `LaserScan`   | LiDAR scan (360 samples, 10 Hz)       |
+| `/camera/image_raw`            | `Image`       | Raw camera (1600×1200, 15 Hz)         |
+| `/camera/camera_info`          | `CameraInfo`  | Camera calibration info               |
+| `/camera/semantic/labels_map`  | `Image`       | Semantic segmentation labels          |
+| `/camera/semantic/colored_map` | `Image`       | Semantic segmentation visualization   |
+| `/imu`                         | `Imu`         | IMU data                              |
+| `/joint_states`                | `JointState`  | Wheel joint states                    |
+| `/odom`                        | `Odometry`    | Robot odometry                        |
+| `/tf`                          | `TFMessage`   | Frame transforms                      |
+
+### Velocity command topics
+
+| Topic          | Type            | Description                                       |
+| -------------- | --------------- | ------------------------------------------------- |
+| `/cmd_vel`     | `TwistStamped`  | Navigation input (priority 19)                    |
+| `/cmd_vel_joy` | `TwistStamped`  | Joystick input (priority 21)                      |
+| `/cmd_vel_key` | `TwistStamped`  | Keyboard input (priority 22)                      |
+| `/cmd_vel_web` | `TwistStamped`  | Web UI input (priority 20)                        |
+| `/cmd_vel_out` | `TwistStamped`  | twist_mux output → twist_stamped_to_twist         |
+| `/cmd_vel_gz`  | `Twist`         | Gazebo bridge input (converted from TwistStamped) |
+
+## Joystick Teleoperation
+
+### Launch teleoperation
+
+```bash
+ros2 launch pizibot_teleop joystick_teleop.launch.py
+```
+
+### Gamepad configuration (generic USB)
+
+- **Enable**: LB (button 4)
+- **Turbo**: RB (button 5)
+- **Linear motion**: Left stick Y-axis — Normal: 0.3 m/s · Turbo: 0.8 m/s
+- **Rotation**: Left stick X-axis — Normal: 0.75 rad/s · Turbo: 2.0 rad/s
+
+Configurable parameters in: `pizibot_teleop/params/joystick.yaml`
 
 ## Dataset Collection
 
-The `dataset_saver` node synchronizes RGB and semantic images to generate a dataset of images and binary masks. Images are saved only when the robot has moved sufficiently (distance > 0.05m or rotation > 30°).
+The `dataset_saver` node synchronizes RGB and semantic images. Images are saved only when the robot has moved sufficiently (distance > 0.05 m or rotation > 30°).
 
 ### Launch dataset collection
 
@@ -119,103 +175,45 @@ ros2 launch pizibot_gz dataset_save.launch.py \
 
 ### Parameters
 
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `label` | `1` | Semantic class label (pixels with this label → black in mask) |
-| `topic_rgb` | `/camera/image_raw` | ROS2 topic for the RGB image |
-| `topic_sem` | `/camera/semantic/labels_map` | ROS2 topic for the semantic image |
-| `dataset_path` | `dataset` | Output folder path (creates `images/` and `masks/` subfolders) |
+| Parameter      | Default                            | Description                                          |
+|----------------|------------------------------------|------------------------------------------------------|
+| `label`        | `1`                                | Semantic class label (→ black in mask)               |
+| `topic_rgb`    | `/camera/image_raw`                | ROS topic for the RGB image                          |
+| `topic_sem`    | `/camera/semantic/labels_map`      | ROS topic for the semantic image                     |
+| `dataset_path` | `dataset`                          | Output folder (creates `images/` and `masks/`)       |
 
-### Output Structure
+### Output structure
 
-```
+```text
 dataset/
 ├── images/
 │   ├── 000000.png
-│   ├── 000001.png
 │   └── ...
 └── masks/
     ├── 000000.png
-    ├── 000001.png
     └── ...
 ```
 
-## ROS Topics
+## Simulation Parameters
 
-### Published by simulation
-- `/scan` - LiDAR scan (360 samples, 10 Hz)
-- `/camera/image_raw` - Raw camera image (1600x1200, 15 Hz)
-- `/camera/camera_info` - Camera calibration info
-- `/camera/semantic/labels_map` - Semantic segmentation labels map
-- `/camera/semantic/colored_map` - Semantic segmentation colored visualization
-- `/imu` - IMU data
-- `/joint_states` - Joint states (wheels)
-- `/odom` - Robot odometry
-- `/tf` - Frame transforms
+### Robot dynamics (`gazebo_config.xacro`)
 
-### For control
+- Max linear acceleration: ±1.0 m/s²
+- Max angular acceleration: ±2.0 rad/s²
+- Odometry publication: 50 Hz
 
-- `/cmd_vel_gz` (`geometry_msgs/msg/Twist`) - Direct velocity command to Gazebo bridge (output of `twist_stamped_to_twist`)
-- `/cmd_vel_out` (`geometry_msgs/msg/TwistStamped`) - Output of `twist_mux`, input of `twist_stamped_to_twist`
-- `/cmd_vel` (`geometry_msgs/msg/TwistStamped`) - Navigation velocity commands
-- `/cmd_vel_joy` (`geometry_msgs/msg/TwistStamped`) - Joystick velocity commands
-- `/cmd_vel_key` (`geometry_msgs/msg/TwistStamped`) - Keyboard velocity commands
+### Sensors
 
-## Joystick Teleoperation
-
-### Launch teleoperation
-```bash
-ros2 launch pizibot_teleop joystick_teleop.launch.py
-```
-
-### Gamepad configuration (generic USB)
-- **Enable**: LB (button 4)
-- **Turbo**: RB (button 5)
-- **Linear motion**: Left stick Y-axis
-  - Normal: 0.3 m/s
-  - Turbo: 0.8 m/s
-- **Rotation**: Left stick X-axis
-  - Normal: 0.75 rad/s
-  - Turbo: 2.0 rad/s
-
-Configurable parameters in: `pizibot_teleop/params/joystick.yaml`
+- **LiDAR**: 360 samples, 10 Hz, range 0.15–12 m
+- **Camera**: 1600×1200, 15 Hz, FOV 1.089 rad
+- **Wheels**: separation 0.273 m, diameter 0.08 m
 
 ## Available Worlds
 
-- **industrial-warehouse.sdf** (default) - Industrial warehouse environment with shelves and obstacles
-- **world_minimal.sdf** - Minimal world for quick testing and debugging
-- **world_test1.world** - Simple test world
-- **world_test2.world** - World with obstacles
-
-## Simulation Parameters
-
-### Robot Dynamics (gazebo_config.xacro)
-- Max linear acceleration: ±1.0 m/s²
-- Max angular acceleration: ±2.0 rad/s²
-- Odometry publication frequency: 50 Hz
-
-### Sensor Parameters
-- **LiDAR**: 360 samples, 10 Hz, range 0.15-12m
-- **Camera**: 1600x1200, 15 Hz, FOV 1.089 rad
-- **Wheels**: Separation 0.273m, diameter 0.08m
-
-## Migration Notes
-
-This package completely replaces `pizibot_gazebo` as part of the **Pizibot migration to ROS 2 Jazzy and Gazebo Harmonic**.
-
-### Package Status
-
-All packages are fully migrated to **ROS 2 Jazzy**. See the [main README](../README.md) for the complete status table.
-
-### Migration Guide
-
-To migrate from the old `pizibot_gazebo`:
-
-1. Update the launch file in your scripts
-2. Replace `pizibot_gazebo` with `pizibot_gz`
-3. Adapt world files if necessary (switch from `.world` to `.sdf` if needed)
-4. Check bridged topics in the launch file
-5. Ensure your ROS 2 distribution is set to Jazzy or compatible
+- **industrial-warehouse.sdf** (default) — industrial warehouse with shelves and obstacles
+- **world_minimal.sdf** — minimal world for quick testing
+- **world_test1.world** — simple test world
+- **world_test2.world** — world with obstacles
 
 ## Author
 
@@ -223,4 +221,4 @@ Axel NIATO <axelniato@gmail.com>
 
 ## License
 
-Apache 2.0
+Apache-2.0

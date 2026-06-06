@@ -1,8 +1,11 @@
-*_generated.yaml
-
 ***/COLCON_IGNORE
+.vscode
 
 # Python
 *.pyc
 __pycache__/
 .venv
+
+# Frontend pizibot_remote_ui
+pizibot_remote_ui/web/node_modules/
+pizibot_remote_ui/web/dist/

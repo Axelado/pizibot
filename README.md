@@ -2,9 +2,7 @@
 
 **PIZIBOT** is a ROS 2 Jazzy package for a two-wheeled mobile robot designed for navigation and computer vision.
 
-## Migration Status
-
-✅ **All packages are fully migrated to ROS 2 Jazzy and Gazebo Harmonic.**
+## Package Overview
 
 | Package | Description | Status |
 |---------|-------------|--------|
@@ -16,6 +14,7 @@
 | `pizibot_navigation` | SLAM and Nav2 navigation stack | ✅ Jazzy |
 | `pizibot_voice` | Voice control for room navigation | ✅ Jazzy |
 | `pizibot_vision` | Computer vision and camera publisher | ✅ Jazzy |
+| `pizibot_remote_ui` | Smartphone PWA — joystick, camera, telemetry | ✅ Jazzy |
 
 ## Getting Started
 
@@ -29,7 +28,6 @@ colcon build --symlink-install
 source install/setup.bash
 ```
 
-
 ## Launch Files
 
 ### Real Robot
@@ -40,11 +38,31 @@ ros2 launch pizibot_hardware launch_real_robot.launch.py
 
 Starts: RPLidar · robot_state_publisher · controller_manager · diff_drive_controller · joint_state_broadcaster · twist_mux · ESP32-CAM stream
 
+With web interface:
+
+```bash
+ros2 launch pizibot_hardware launch_real_robot.launch.py enable_remote_ui:=true
+```
+
 ### Simulation (Gazebo Harmonic)
 
 ```bash
 ros2 launch pizibot_gz launch_sim.launch.py
 ```
+
+With web interface:
+
+```bash
+ros2 launch pizibot_gz launch_sim.launch.py enable_remote_ui:=true
+```
+
+### Web Interface (standalone)
+
+```bash
+ros2 launch pizibot_remote_ui remote_ui.launch.py
+```
+
+Open `http://<robot-ip>:3000` from any device on the same LAN.
 
 ### Mapping (SLAM)
 
@@ -79,11 +97,19 @@ ros2 launch pizibot_gz dataset_save.launch.py
 - **Navigation**: Autonomous movement and path planning with Nav2
 - **Computer Vision**: Camera image capture, publishing, and semantic segmentation in simulation
 - **Voice Control**: Voice-activated room navigation
+- **Remote Web UI**: PWA accessible from any smartphone — virtual joystick, live camera, telemetry
 
-## Known Limitations
+## twist_mux Priority Table
 
-- **Web Interface**: Not yet implemented
-- **LCD Display Integration**: Not yet implemented
+All velocity sources publish `TwistStamped` (`use_stamped: true`).
+
+| Source | Topic | Priority |
+|--------|-------|----------|
+| Keyboard | `cmd_vel_key` | 22 |
+| Joystick | `cmd_vel_joy` | 21 |
+| Web UI | `cmd_vel_web` | 20 |
+| Navigation | `cmd_vel` | 19 |
+| Visual tracking | `cmd_vel_tracker` | 18 |
 
 ## Author
 

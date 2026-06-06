@@ -1,0 +1,6 @@
+rosbridge_websocket:
+  ros__parameters:
+    port: 9090
+    address: '0.0.0.0'
+    ssl: false
+    authenticate: false

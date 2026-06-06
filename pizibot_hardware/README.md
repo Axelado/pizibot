@@ -8,7 +8,7 @@ This package orchestrates all hardware components of the real robot:
 
 - **RPLidar A1** — laser scanner
 - **ros2_control** — controller manager with `diff_drive_controller` and `joint_state_broadcaster`
-- **twist_mux** — velocity command multiplexer (navigation, joystick, keyboard, visual tracking)
+- **twist_mux** — velocity command multiplexer (navigation, joystick, keyboard, web UI, visual tracking)
 - **ESP32-CAM** — HTTP video stream → `/camera/image_raw`
 - **pizibot_hw_interface** — hardware interface plugin (serial communication with ESP32)
 
@@ -20,6 +20,12 @@ This package orchestrates all hardware components of the real robot:
 
 ```bash
 ros2 launch pizibot_hardware launch_real_robot.launch.py
+```
+
+With the web remote interface:
+
+```bash
+ros2 launch pizibot_hardware launch_real_robot.launch.py enable_remote_ui:=true
 ```
 
 ### Verify hardware is up
@@ -38,7 +44,7 @@ ros2 topic pub /diff_drive_controller/cmd_vel geometry_msgs/msg/Twist \
 
 ## Package Structure
 
-```
+```text
 pizibot_hardware/
 ├── launch/
 │   ├── launch_real_robot.launch.py   # Main real robot launch
@@ -66,14 +72,23 @@ pizibot_hardware/
 
 ### Twist mux priorities (`param/twist_mux.yaml`)
 
+All sources publish `TwistStamped` (`use_stamped: true`).
+
 | Source | Topic | Priority |
 |--------|-------|----------|
 | Keyboard | `cmd_vel_key` | 22 |
 | Joystick | `cmd_vel_joy` | 21 |
-| Navigation | `cmd_vel` | 20 |
-| Visual tracking | `cmd_vel_tracker` | 10 |
+| Web UI | `cmd_vel_web` | 20 |
+| Navigation | `cmd_vel` | 19 |
+| Visual tracking | `cmd_vel_tracker` | 18 |
 
 Output remapped to `diff_drive_controller/cmd_vel`.
+
+### Launch arguments
+
+| Argument             | Default  | Description                                                       |
+|----------------------|----------|-------------------------------------------------------------------|
+| `enable_remote_ui`   | `false`  | Launch rosbridge + web_video_server + HTTP server for the web UI  |
 
 ### Serial port
 
@@ -85,7 +100,7 @@ The ESP32 serial port is configured in `pizibot_description/urdf/control.xacro`:
 
 Create a udev rule to get a stable device name:
 
-```
+```udev
 SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", \
 SYMLINK+="ttyESP32", MODE="0666"
 ```
@@ -100,13 +115,14 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 
 | Topic | Type | Description |
 |-------|------|-------------|
-| `/diff_drive_controller/cmd_vel` | `Twist` | Velocity command input |
+| `/diff_drive_controller/cmd_vel` | `TwistStamped` | Velocity command input (twist_mux output) |
 | `/diff_drive_controller/odom` | `Odometry` | Wheel odometry |
 | `/joint_states` | `JointState` | Wheel joint states |
 | `/scan` | `LaserScan` | RPLidar scan |
 | `/camera/image_raw` | `Image` | ESP32-CAM stream |
 | `/imu` | `Imu` | IMU data (from ESP32 via hw_interface) |
 | `/battery_state` | `BatteryState` | Battery (from ESP32 via hw_interface) |
+| `/cmd_vel_web` | `TwistStamped` | Web UI joystick commands (priority 20) |
 
 ## Dependencies
 

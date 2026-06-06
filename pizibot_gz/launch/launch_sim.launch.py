@@ -3,7 +3,9 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, AppendEnvironmentVariable
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, AppendEnvironmentVariable, IncludeLaunchDescription
+from launch.conditions import IfCondition
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
@@ -18,6 +20,12 @@ def generate_launch_description():
     pkg_path = get_package_share_directory(package_name)
 
     # Arguments
+    enable_remote_ui_arg = DeclareLaunchArgument(
+        'enable_remote_ui',
+        default_value='false',
+        description='Launch rosbridge + web_video_server + HTTP server for the web UI'
+    )
+
     gazebo_world_arg = DeclareLaunchArgument(
         'gazebo_world',
         default_value=os.path.join(pkg_path, 'worlds', 'industrial-warehouse.sdf'),
@@ -168,8 +176,18 @@ def generate_launch_description():
         output='screen',
     )
 
+    remote_ui = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('pizibot_remote_ui'),
+                'launch', 'remote_ui.launch.py'
+            )
+        ),
+        condition=IfCondition(LaunchConfiguration('enable_remote_ui'))
+    )
 
     return LaunchDescription([
+        enable_remote_ui_arg,
         gazebo_world_arg,
         x_pose_arg,
         y_pose_arg,
@@ -185,4 +203,5 @@ def generate_launch_description():
         gazebo_ros_colored_map_bridge,
         twist_mux,
         twist_stamped_to_twist,
+        remote_ui,
     ])
