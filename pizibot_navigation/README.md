@@ -32,7 +32,7 @@ This package provides the complete navigation stack for the Pizibot robot, inclu
 - **localization_launch.py**: AMCL and map server for localization, plus the EKF node
 - **navigation_launch.py**: Nav2 navigation stack only
 - **online_async_launch.py**: Online asynchronous SLAM mapping, plus the EKF node
-- **ekf.launch.py**: EKF node (`robot_localization`) fusing wheel odometry and IMU
+- **ekf.launch.py**: EKF node (`robot_localization`) fusing wheel odometry and IMU. Wheel odometry input topic (`odom0`) is selected automatically from `use_sim_time`: `/odom` in sim, `/diff_drive_controller/odom` on the real robot (override with `odom_topic`)
 - **publish_initial_pose.launch.py**: Publishes initial robot pose for localization
 - **rviz2.launch.py**: RViz2 with custom configurations
 

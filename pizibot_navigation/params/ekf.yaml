@@ -6,7 +6,7 @@ ekf_filter_node:
     use_sim_time: true
     
     # Frequency of the filter update (Hz)
-    frequency: 50.0
+    frequency: 30.0
     
     # Delay time (seconds) to wait for tf transforms
     transform_timeout: 0.05
