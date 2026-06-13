@@ -53,8 +53,9 @@ pizibot_description/
 │   ├── dimensions.xacro        # All physical dimensions and sensor properties
 │   ├── lidar.xacro             # RPLidar A1 link, joint, and Gazebo plugin
 │   ├── camera.xacro            # Camera link, joint, and Gazebo plugin
+│   ├── imu.xacro               # IMU link, joint, and Gazebo plugin
 │   ├── control.xacro           # ros2_control configuration
-│   ├── gazebo_config.xacro     # Gazebo-specific settings (IMU, odometry)
+│   ├── gazebo_config.xacro     # Gazebo-specific settings (odometry, diff drive)
 │   ├── inertial_macros.xacro   # Inertia helper macros
 │   └── material_colors.xacro   # Visual material definitions
 ├── meshes/
@@ -83,6 +84,7 @@ Visual and collision geometry are separated into distinct links:
 | `laser_visual` | LiDAR visual mesh (`rplidar_a1.stl`) — fixed to chassis |
 | `camera_link` | Camera sensor frame (directly on chassis, no support link) |
 | `camera_link_optical` | Camera optical frame |
+| `imu_link` | IMU sensor frame (fixed to `base_link`, yawed -90°) |
 
 ## Key Parameters (`dimensions.xacro`)
 
@@ -102,6 +104,7 @@ Visual and collision geometry are separated into distinct links:
 | `wheel_width` | 0.04 m |
 | `wheel_separation` | 0.29 m |
 | `wheel_y_offset` | 0.01969 m |
+| `wheel_friction` | 1.0 (Gazebo `mu1`/`mu2` on drive wheels) |
 | `max_wheel_velocity` | 4.6 rad/s (≈ 43.9 RPM) |
 | `max_wheel_effort` | 40 Nm |
 
@@ -135,6 +138,14 @@ Visual and collision geometry are separated into distinct links:
 | `camera_image_width` / `camera_image_height` | 1600 × 1200 px |
 | `camera_update_rate` | 15 Hz |
 | `camera_clip_near` / `camera_clip_far` | 0.05 m / 8.0 m |
+
+### IMU
+
+| Parameter | Value |
+| --------- | ----- |
+| `imu_x_offset` | -0.011 m |
+| `imu_y_offset` | 0.100 m |
+| `imu_z_offset` | 0.092 m |
 
 ## Coordinate Frames
 

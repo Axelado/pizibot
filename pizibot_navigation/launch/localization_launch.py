@@ -192,7 +192,7 @@ def generate_launch_description():
     ld.add_action(load_nodes)
     ld.add_action(load_composable_nodes)
 
-    # Add EKF for sensor fusion (odometry + IMU)
+    # Launch the EKF node to fuse wheel odometry and IMU data
     ekf_launch_path = os.path.join(package_name, 'launch', 'ekf.launch.py')
     ekf = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(ekf_launch_path),

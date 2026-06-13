@@ -9,13 +9,12 @@ ekf_filter_node:
     frequency: 50.0
     
     # Delay time (seconds) to wait for tf transforms
-    transform_timeout: 0.0
+    transform_timeout: 0.05
     
     # If true, the filter will not start until it receives at least one message from each sensor
     two_d_mode: true
     
     # Frame configuration
-    map_frame: map
     odom_frame: odom
     base_link_frame: base_link
     world_frame: odom
@@ -29,10 +28,10 @@ ekf_filter_node:
     
     # Odometry configuration (from wheel encoders via diff_drive)
     odom0: /odom
-    odom0_config: [true,  true,  false,   # x, y, z
-                   false, false, true,    # roll, pitch, yaw
-                   true,  true,  false,   # vx, vy, vz
-                   false, false, true,    # vroll, vpitch, vyaw
+    odom0_config: [false,  false,  false,   # x, y, z
+                   false, false, false,    # roll, pitch, yaw
+                   true,  false, false,   # vx, vy, vz (vy: a diff-drive robot can't move sideways)
+                   false, false, false,    # vroll, vpitch, vyaw
                    false, false, false]   # ax, ay, az
     odom0_queue_size: 10
     odom0_differential: false
@@ -40,16 +39,24 @@ ekf_filter_node:
     
     # IMU configuration
     imu0: /imu
+    # Note: imu_link is yaw-rotated (-90 deg) relative to base_link (true on the real
+    # robot too). robot_localization transforms angular velocity/acceleration vectors
+    # correctly via TF, but its absolute orientation transform is a conjugation that
+    # leaves same-axis (yaw) rotations unchanged, so the IMU yaw would disagree with
+    # the wheel odometry yaw by ~90 deg. Don't fuse absolute orientation to avoid this.
     imu0_config: [false, false, false,   # x, y, z (IMU doesn't provide position)
-                  true,  true,  true,    # roll, pitch, yaw (orientation)
+                  false, false, false,   # roll, pitch, yaw (orientation - not fused, see note)
                   false, false, false,   # vx, vy, vz (IMU doesn't provide linear velocity)
-                  true,  true,  true,    # vroll, vpitch, vyaw (angular velocity)
-                  true,  true,  true]    # ax, ay, az (linear acceleration)
+                  false,  false,  true,    # vroll, vpitch, vyaw (angular velocity)
+                  false,  false,  false]   # ax, ay, az (az not fused, see note)
     imu0_queue_size: 10
     imu0_differential: false
     imu0_relative: false
-    # Remove gravitational acceleration from IMU data
-    imu0_remove_gravitational_acceleration: true
+    # The real IMU only outputs angular velocity and raw linear acceleration, no
+    # orientation quaternion, so gravity removal (which needs that quaternion)
+    # can't be used. On a flat floor (two_d_mode, roll/pitch ~= 0) gravity doesn't
+    # project onto ax/ay anyway, and az is not fused, so this is safe in sim too.
+    imu0_remove_gravitational_acceleration: false
     
     # Process noise covariance (how much the filter trusts the motion model)
     # Lower values = more trust in the model, higher values = more responsive to sensor data

@@ -11,6 +11,7 @@
     <xacro:include filename="$(find pizibot_description)/urdf/lidar.xacro" />
     <xacro:include filename="$(find pizibot_description)/urdf/control.xacro" />
     <xacro:include filename="$(find pizibot_description)/urdf/camera.xacro" />
+    <xacro:include filename="$(find pizibot_description)/urdf/imu.xacro" />
 
     <xacro:pizibot/>
     

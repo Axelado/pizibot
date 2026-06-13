@@ -66,6 +66,13 @@ def generate_launch_description():
                                    'params', 'mapper_params_online_async.yaml'),
         description='Full path to the ROS2 parameters file to use for the slam_toolbox node')
 
+    # Launch the EKF node to fuse wheel odometry and IMU data
+    ekf_launch_path = os.path.join(get_package_share_directory(package_name), 'launch', 'ekf.launch.py')
+    ekf = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(ekf_launch_path),
+        launch_arguments={'use_sim_time': use_sim_time}.items()
+    )
+
     # Use LifecycleNode for slam_toolbox
     start_async_slam_toolbox_node = LifecycleNode(
         package='slam_toolbox',
@@ -85,13 +92,6 @@ def generate_launch_description():
     # Create and start the thread to activate the node after a delay
     activation_thread = threading.Thread(target=activate_slam_after_delay, daemon=True)
     activation_thread.start()
-
-    # EKF for sensor fusion (odometry + IMU)
-    ekf_launch_path = os.path.join(get_package_share_directory(package_name), 'launch', 'ekf.launch.py')
-    ekf = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(ekf_launch_path),
-        launch_arguments={'use_sim_time': use_sim_time}.items()
-    )
 
     ld = LaunchDescription()
     ld.add_action(declare_use_sim_time_argument)
