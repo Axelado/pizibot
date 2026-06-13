@@ -74,7 +74,9 @@ ros2 launch pizibot_navigation full_mapping.launch.py
 ### Localization and Navigation
 
 ```bash
-ros2 launch pizibot_navigation full_localization.launch.py map:=/path/to/map.yaml
+ros2 launch pizibot_navigation full_localization.launch.py
+# Or, on the real robot:
+ros2 launch pizibot_navigation full_localization.launch.py robot_mode:=real
 ```
 
 ### Camera Publisher
