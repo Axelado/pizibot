@@ -7,7 +7,7 @@ ROS 2 Jazzy teleoperation package for the Pizibot robot. Supports both keyboard 
 This package provides teleoperation capabilities for the Pizibot robot with:
 
 - **Keyboard Teleoperation** - AZERTY keyboard layout support
-- **Joystick Teleoperation** - Generic USB gamepad support
+- **Joystick Teleoperation** - PS4-style Bluetooth gamepad support
 - **ROS 2 Jazzy** - Compatible with ROS 2 Jazzy
 
 ## Migration Status
@@ -62,14 +62,14 @@ Launch joystick-based teleoperation:
 ros2 launch pizibot_teleop joystick_teleop.launch.py
 ```
 
-**Gamepad Configuration (generic USB):**
-- **Enable**: LB (button 4)
-- **Turbo**: RB (button 5)
+**Gamepad Configuration (PS4-style Bluetooth gamepad):**
+- **Enable**: R1 (button 10)
+- **Turbo**: L1 (button 9)
 - **Linear motion**: Left stick Y-axis
-  - Normal: 0.3 m/s
-  - Turbo: 0.8 m/s
+  - Normal: 0.08 m/s
+  - Turbo: 1.0 m/s
 - **Rotation**: Left stick X-axis
-  - Normal: 0.75 rad/s
+  - Normal: 1.0 rad/s
   - Turbo: 2.0 rad/s
 
 Configurable parameters in: `params/joystick.yaml`

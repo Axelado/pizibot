@@ -113,8 +113,8 @@ Virtual joystick using nipplejs in **static** mode (fixed position, does not fol
 **Velocity mapping:**
 
 ```
-linear_x  =  sin(angle) × force × MAX_LINEAR   (MAX_LINEAR  = 0.4 m/s)
-angular_z = -cos(angle) × force × MAX_ANGULAR  (MAX_ANGULAR = 1.2 rad/s)
+linear_x  =  sin(angle) × force × MAX_LINEAR   (MAX_LINEAR  = 0.08 m/s)
+angular_z = -cos(angle) × force × MAX_ANGULAR  (MAX_ANGULAR = 1.0 rad/s)
 ```
 
 `force` is clamped to 1.0 (nipplejs raw value can exceed 1 for fast movements).

@@ -3,9 +3,9 @@ joy_node:
     device_id: 0
     deadzone: 0.05
     autorepeat_rate: 30.0
-    # Generic USB gamepad axes mapping
-    # Axes: 0=Left-X (yaw), 1=Left-Y (linear), 2=Right-X, 3=Right-Y, 4=LT, 5=RT
-    # Buttons: 0=A, 1=B, 2=X, 3=Y, 4=LB, 5=RB, 6=Back, 7=Start
+    # PS4-style Bluetooth gamepad mapping
+    # Axes: 0=Left-X (yaw), 1=Left-Y (linear), 2=L2, 3=Right-X, 4=Right-Y, 5=R2
+    # Buttons: 0=Cross, 1=Circle, 2=Triangle, 3=Square, 9=L1, 10=R1
 
 teleop_node:
   ros__parameters:
@@ -13,21 +13,21 @@ teleop_node:
     axis_linear:
       x: 1  # Left-Y axis (vertical)
     scale_linear:
-      x: 0.3  # Normal speed: 0.3 m/s
+      x: 0.08  # Normal speed: 0.08 m/s
     scale_linear_turbo:
-      x: 0.8  # Turbo speed: 0.8 m/s
+      x: 1.0 # Turbo speed: 0.8 m/s
 
     # Angular velocity control via Left stick X-axis
     axis_angular:
       yaw: 0  # Left-X axis (horizontal)
     scale_angular:
-      yaw: 0.75  # Normal rotation: 0.75 rad/s
+      yaw: 1.0  # Normal rotation: 0.75 rad/s
     scale_angular_turbo:
       yaw: 2.0  # Turbo rotation: 2.0 rad/s
 
     require_enable_button: true
-    enable_button: 4  # LB button to enable teleoperation
-    enable_turbo_button: 5  # RB button for turbo mode
+    enable_button: 10  # R1 button to enable teleoperation
+    enable_turbo_button: 9  # L1 button for turbo mode
 
     publish_stamped_twist: true
 

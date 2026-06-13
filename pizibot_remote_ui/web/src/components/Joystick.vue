@@ -10,8 +10,8 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import nipplejs from 'nipplejs'
 import { publishTwist } from '../ros.js'
 
-const MAX_LINEAR  = 0.4   // m/s
-const MAX_ANGULAR = 1.2   // rad/s
+const MAX_LINEAR  = 0.08   // m/s
+const MAX_ANGULAR = 1.0   // rad/s
 const HZ = 15
 
 const zone = ref(null)
