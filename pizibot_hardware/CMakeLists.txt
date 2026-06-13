@@ -11,9 +11,6 @@ find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
 find_package(rclpy REQUIRED)
 
-install(DIRECTORY include/
-        DESTINATION include/${PROJECT_NAME})
-
 install(DIRECTORY param launch rviz
         DESTINATION share/${PROJECT_NAME})
 

@@ -22,7 +22,7 @@ def generate_launch_description():
 
     enable_remote_ui_arg = DeclareLaunchArgument(
         'enable_remote_ui',
-        default_value='false',
+        default_value='true',
         description='Launch rosbridge + web_video_server + HTTP server for the web UI'
     )
 

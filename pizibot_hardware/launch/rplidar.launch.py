@@ -18,7 +18,7 @@ def generate_launch_description():
                 'inverted': False,
                 'angle_compensate': True,
                 'flip_x_axis': False,
-                
+                'scan_mode': 'Standard',
             }],
         ),
     ])
