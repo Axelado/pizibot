@@ -2,8 +2,9 @@
  * @file initial_pose_publisher.cpp
  * @brief ROS 2 node that publishes an initial pose estimate for AMCL localization
  *
- * This node publishes a PoseWithCovarianceStamped message to the /initialpose topic
- * for 3 seconds at 10 Hz to ensure AMCL receives and processes the initial pose.
+ * This node waits until AMCL subscribes to /initialpose, then publishes a
+ * PoseWithCovarianceStamped message on that topic for 3 seconds at 10 Hz to
+ * ensure AMCL receives and processes the initial pose.
  *
  * @author Axel NIATO
  * @date January 2026
@@ -22,9 +23,9 @@ using namespace std::chrono_literals;
  * @class InitialPosePublisher
  * @brief Publishes an initial pose estimate to /initialpose topic
  *
- * This node reads an initial pose parameter [x, y, yaw] and publishes it
- * to the /initialpose topic for AMCL localization. The pose is published
- * repeatedly for 3 seconds to ensure reliable delivery.
+ * This node reads an initial pose parameter [x, y, yaw] and waits until AMCL
+ * subscribes to /initialpose before publishing it for AMCL localization. The
+ * pose is then published repeatedly for 3 seconds to ensure reliable delivery.
  */
 class InitialPosePublisher : public rclcpp::Node
 {
@@ -67,32 +68,42 @@ public:
         // Set default covariance values for AMCL
         // Covariance matrix is 6x6, stored row-major
         msg_.pose.covariance[0] = 0.25;   // x variance
-        msg_.pose.covariance[7] = 0.25;   // y variance
+            msg_.pose.covariance[7] = 0.25;   // y variance
         msg_.pose.covariance[35] = 0.0685; // yaw variance
 
-        // Start timer to publish at 10 Hz for 3 seconds
+        // Check at 10 Hz whether AMCL has subscribed yet, then publish for 3 seconds
         timer_ = this->create_wall_timer(
             100ms, std::bind(&InitialPosePublisher::timer_callback, this)
         );
-        start_time_ = this->now();
-        
-        RCLCPP_INFO(this->get_logger(), 
-                    "InitialPosePublisher started: x=%.2f, y=%.2f, yaw=%.2f rad (publishing for 3 seconds...)",
-                    pose[0], pose[1], pose[2]);
+
+        RCLCPP_INFO(this->get_logger(), "Waiting for a subscriber on /initialpose...");
     }
 
 private:
     /**
-     * @brief Timer callback that publishes the pose and checks for timeout
+     * @brief Timer callback that waits for AMCL, then publishes the pose
      *
-     * Publishes the initial pose message and shuts down the node after 3 seconds.
+     * Until a subscriber is present on /initialpose, the callback does
+     * nothing. Once AMCL is ready, the pose is published for 3 seconds,
+     * after which the node shuts down.
      */
     void timer_callback()
     {
+        if (!publishing_) {
+            if (publisher_->get_subscription_count() == 0) {
+                return;
+            }
+            publishing_ = true;
+            start_time_ = this->now();
+            RCLCPP_INFO(this->get_logger(),
+                        "AMCL is ready: publishing initial pose x=%.2f, y=%.2f, yaw=%.2f rad (for 3 seconds)",
+                        pose_x_, pose_y_, pose_yaw_);
+        }
+
         auto now = this->now();
         msg_.header.stamp = now;
         publisher_->publish(msg_);
-        
+
         if ((now - start_time_).seconds() >= 3.0) {
             RCLCPP_INFO(this->get_logger(), "Finished publishing initial pose.");
             rclcpp::shutdown();
@@ -103,6 +114,10 @@ private:
     geometry_msgs::msg::PoseWithCovarianceStamped msg_;
     rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::Time start_time_;
+    bool publishing_ = false;
+    double pose_x_ = 0.0;
+    double pose_y_ = 0.0;
+    double pose_yaw_ = 0.0;
 };
 
 /**
