@@ -106,13 +106,13 @@ controller_server:
       ay_max: 0.0
       ay_min: 0.0
       az_max: 1.8
-      vx_std: 0.1
+      vx_std: 0.28
       vy_std: 0.0
-      wz_std: 0.3
-      vx_max: 0.184
-      vx_min: -0.184
+      wz_std: 0.85
+      vx_max: 0.52
+      vx_min: -0.52
       vy_max: 0.0
-      wz_max: 1.27
+      wz_max: 3.59
       iteration_count: 1
       prune_distance: 1.7
       transform_tolerance: 0.1

@@ -199,15 +199,15 @@ dataset/
 
 ### Robot dynamics (`gazebo_config.xacro`)
 
-- Max linear acceleration: ±1.0 m/s²
-- Max angular acceleration: ±2.0 rad/s²
+- Max linear acceleration: ±2.0 m/s²
+- Max angular acceleration: ±1.8 rad/s²
 - Odometry publication: 50 Hz
 
 ### Sensors
 
 - **LiDAR**: 360 samples, 10 Hz, range 0.15–12 m
 - **Camera**: 1600×1200, 15 Hz, FOV 1.089 rad
-- **Wheels**: separation 0.29 m, diameter 0.08 m, friction `mu1`/`mu2` = 1.0
+- **Wheels**: separation 0.26 m, diameter 0.08 m, friction `mu1`/`mu2` = 1.0
 
 ## Available Worlds
 

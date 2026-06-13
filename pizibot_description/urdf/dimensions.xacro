@@ -10,12 +10,12 @@
     <xacro:property name="wheel_width" value="0.04" />
     <xacro:property name="wheel_diameter" value="0.08" />
     <xacro:property name="wheel_mass" value="0.1" />
-    <xacro:property name="wheel_separation" value="0.29" />
+    <xacro:property name="wheel_separation" value="0.26" />
     <xacro:property name="wheel_y_offset" value="0.01969" />
     <xacro:property name="wheel_friction" value="1.0" />
     
-    <!-- Max wheel velocity property in rad/s (4.6 rad/s RPM ≈ 43.93 RPM) -->
-    <xacro:property name="max_wheel_velocity" value="4.6" />
+    <!-- Max wheel velocity property in rad/s (13.0 rad/s ≈ 124.1 RPM, matches WHEEL_CMD_MAX_RADS) -->
+    <xacro:property name="max_wheel_velocity" value="13.0" />
     <!-- Max wheel effort in Nm -->
     <xacro:property name="max_wheel_effort" value="40" />
 

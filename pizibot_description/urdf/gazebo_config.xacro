@@ -13,10 +13,10 @@
             <right_joint>right_wheel_joint</right_joint>
             <wheel_separation>${wheel_separation}</wheel_separation>
             <wheel_radius>${wheel_diameter/2}</wheel_radius>
-            <max_linear_acceleration>1.0</max_linear_acceleration>
-            <min_linear_acceleration>-1.0</min_linear_acceleration>
-            <max_angular_acceleration>2.0</max_angular_acceleration>
-            <min_angular_acceleration>-2.0</min_angular_acceleration>
+            <max_linear_acceleration>2.0</max_linear_acceleration>
+            <min_linear_acceleration>-2.0</min_linear_acceleration>
+            <max_angular_acceleration>1.8</max_angular_acceleration>
+            <min_angular_acceleration>-1.8</min_angular_acceleration>
             <topic>cmd_vel_gz</topic>
             <odom_topic>odom</odom_topic>
             <frame_id>odom</frame_id>
