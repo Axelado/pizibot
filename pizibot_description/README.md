@@ -102,10 +102,10 @@ Visual and collision geometry are separated into distinct links:
 | --------- | ----- |
 | `wheel_diameter` | 0.08 m |
 | `wheel_width` | 0.04 m |
-| `wheel_separation` | 0.29 m |
+| `wheel_separation` | 0.26 m |
 | `wheel_y_offset` | 0.01969 m |
 | `wheel_friction` | 1.0 (Gazebo `mu1`/`mu2` on drive wheels) |
-| `max_wheel_velocity` | 4.6 rad/s (≈ 43.9 RPM) |
+| `max_wheel_velocity` | 13.0 rad/s (≈ 124.1 RPM) |
 | `max_wheel_effort` | 40 Nm |
 
 ### Caster Wheels

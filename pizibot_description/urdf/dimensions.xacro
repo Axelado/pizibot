@@ -14,8 +14,8 @@
     <xacro:property name="wheel_y_offset" value="0.01969" />
     <xacro:property name="wheel_friction" value="1.0" />
     
-    <!-- Max wheel velocity property in rad/s (13.0 rad/s ≈ 124.1 RPM, matches WHEEL_CMD_MAX_RADS) -->
-    <xacro:property name="max_wheel_velocity" value="13.0" />
+    <!-- Max wheel velocity property in rad/s (10.0 rad/s ≈ 95.5 RPM, matches WHEEL_CMD_MAX_RADS) -->
+    <xacro:property name="max_wheel_velocity" value="10.0" />
     <!-- Max wheel effort in Nm -->
     <xacro:property name="max_wheel_effort" value="40" />
 

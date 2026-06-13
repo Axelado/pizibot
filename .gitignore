@@ -9,3 +9,6 @@ __pycache__/
 # Frontend pizibot_remote_ui
 pizibot_remote_ui/web/node_modules/
 pizibot_remote_ui/web/dist/
+
+# Temp files
+*.tmp

@@ -64,7 +64,7 @@ pizibot_hardware/
 
 | Parameter | Value |
 | --------- | ----- |
-| `wheel_separation` | 0.29 m (`${wheel_separation}` from `pizibot_description`) |
+| `wheel_separation` | 0.26 m (`${wheel_separation}` from `pizibot_description`) |
 | `wheel_radius` | 0.04 m (`${wheel_diameter/2}` from `pizibot_description`) |
 | `update_rate` | 50 Hz |
 | `cmd_vel_timeout` | 0.5 s |
