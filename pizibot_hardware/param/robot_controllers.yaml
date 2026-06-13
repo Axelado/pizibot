@@ -20,11 +20,11 @@ diff_drive_controller:
     odom_frame_id: odom
     base_frame_id: base_link
 
-    pose_covariance_diagonal:  [0.001, 0.001, 1000.0, 1000.0, 1000.0, 0.01]
-    twist_covariance_diagonal: [0.001, 0.001, 1000.0, 1000.0, 1000.0, 0.01]
+    pose_covariance_diagonal:  [2.178e-06, 2.336e-05, 1000.0, 1000.0, 0.01]
+    twist_covariance_diagonal: [1.173e-07, 0.001, 1000.0, 1000.0, 1000.0, 0.01]
 
     open_loop: false
-    enable_odom_tf: true
+    enable_odom_tf: false
     cmd_vel_timeout: 0.5
 
 joint_state_broadcaster:

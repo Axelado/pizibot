@@ -12,7 +12,7 @@
         <joint name="base_footprint_joint" type="fixed">
             <parent link="base_link"/>
             <child link="base_footprint"/>
-            <origin xyz="0 0 -${ground_clearance/2}" rpy="0 0 0"/>
+            <origin xyz="0 0 -${ground_clearance}" rpy="0 0 0"/>
         </joint>
 
         <!-- CHASSIS -->
@@ -43,7 +43,7 @@
 
         <link name="chassis_visual">
             <visual>
-                <origin xyz="0 0 0" rpy="0 0 0 "/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
                     <mesh filename="package://pizibot_description/meshes/robot_chassis.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
@@ -87,6 +87,8 @@
 
         <gazebo reference="left_wheel">
             <material>Gazebo/Red</material>
+            <mu1 value="${wheel_friction}"/>
+            <mu2 value="${wheel_friction}"/>
         </gazebo>
 
 
@@ -120,6 +122,8 @@
 
         <gazebo reference="right_wheel">
             <material>Gazebo/Red</material>
+            <mu1 value="${wheel_friction}"/>
+            <mu2 value="${wheel_friction}"/>
         </gazebo>
 
 
@@ -197,7 +201,7 @@
 
         <link name="front_caster_cylinder">
             <collision>
-                <origin xyz="0 0 -${ground_clearance/2}" rpy="0 0 0 "/>
+                <origin xyz="0 0 -${ground_clearance/2}" rpy="0 0 0"/>
                 <geometry>
                     <cylinder length="${ground_clearance}" radius="${caster_diameter/2}" />
                 </geometry>
@@ -213,7 +217,7 @@
 
         <link name="back_caster_cylinder">
             <collision>
-                <origin xyz="0 0 -${ground_clearance/2}" rpy="0 0 0 "/>
+                <origin xyz="0 0 -${ground_clearance/2}" rpy="0 0 0"/>
                 <geometry>
                     <cylinder length="${ground_clearance}" radius="${caster_diameter/2}" />
                 </geometry>

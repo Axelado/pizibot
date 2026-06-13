@@ -22,10 +22,10 @@ This package orchestrates all hardware components of the real robot:
 ros2 launch pizibot_hardware launch_real_robot.launch.py
 ```
 
-With the web remote interface:
+The web remote interface (rosbridge + web_video_server + HTTP server) is launched by default. To disable it:
 
 ```bash
-ros2 launch pizibot_hardware launch_real_robot.launch.py enable_remote_ui:=true
+ros2 launch pizibot_hardware launch_real_robot.launch.py enable_remote_ui:=false
 ```
 
 ### Verify hardware is up
@@ -64,11 +64,11 @@ pizibot_hardware/
 
 | Parameter | Value |
 | --------- | ----- |
-| `wheel_separation` | 0.29 m |
-| `wheel_radius` | 0.04 m |
+| `wheel_separation` | 0.29 m (`${wheel_separation}` from `pizibot_description`) |
+| `wheel_radius` | 0.04 m (`${wheel_diameter/2}` from `pizibot_description`) |
 | `update_rate` | 50 Hz |
 | `cmd_vel_timeout` | 0.5 s |
-| `enable_odom_tf` | true |
+| `enable_odom_tf` | false (odom → base_link TF is published by the EKF node in `pizibot_navigation`) |
 
 ### Twist mux priorities (`param/twist_mux.yaml`)
 
@@ -88,7 +88,7 @@ Output remapped to `diff_drive_controller/cmd_vel`.
 
 | Argument             | Default  | Description                                                       |
 |----------------------|----------|-------------------------------------------------------------------|
-| `enable_remote_ui`   | `false`  | Launch rosbridge + web_video_server + HTTP server for the web UI  |
+| `enable_remote_ui`   | `true`   | Launch rosbridge + web_video_server + HTTP server for the web UI  |
 
 ### Serial port
 
@@ -128,6 +128,7 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 
 - `pizibot_description` — robot URDF
 - `pizibot_hw_interface` — hardware interface plugin
+- `pizibot_navigation` — EKF and navigation stack
 - `controller_manager`, `diff_drive_controller`, `joint_state_broadcaster` — ros2_control
 - `rplidar_ros` — RPLidar driver
 - `twist_mux` — velocity multiplexer

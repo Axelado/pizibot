@@ -14,9 +14,9 @@
                 <plugin>pizibot_hw_interface/PizibotHardware</plugin>
                 <param name="serial_port">/dev/ttyESP32</param>
                 <param name="baud_rate">115200</param>
-                <param name="encoder_ppr">1320</param>
-                <param name="wheel_radius">0.04</param>
-                <param name="wheel_separation">0.29</param>
+                <param name="encoder_ppr">330</param>
+                <param name="wheel_radius">${wheel_diameter/2}</param>
+                <param name="wheel_separation">${wheel_separation}</param>
             </hardware>
 
             <joint name="left_wheel_joint">
