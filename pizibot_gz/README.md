@@ -120,10 +120,11 @@ pizibot_gz/
 | `/camera/camera_info`          | `CameraInfo`  | Camera calibration info               |
 | `/camera/semantic/labels_map`  | `Image`       | Semantic segmentation labels          |
 | `/camera/semantic/colored_map` | `Image`       | Semantic segmentation visualization   |
-| `/imu`                         | `Imu`         | IMU data                              |
+| `/imu`                         | `Imu`         | IMU data (from `imu_link`)            |
 | `/joint_states`                | `JointState`  | Wheel joint states                    |
 | `/odom`                        | `Odometry`    | Robot odometry                        |
-| `/tf`                          | `TFMessage`   | Frame transforms                      |
+
+`/tf` (`odom` → `base_link`) is not published by the simulation itself; it is published by the EKF node (`ekf_filter_node`) when `pizibot_navigation` is launched.
 
 ### Velocity command topics
 
@@ -144,12 +145,12 @@ pizibot_gz/
 ros2 launch pizibot_teleop joystick_teleop.launch.py
 ```
 
-### Gamepad configuration (generic USB)
+### Gamepad configuration (PS4-style Bluetooth gamepad)
 
-- **Enable**: LB (button 4)
-- **Turbo**: RB (button 5)
-- **Linear motion**: Left stick Y-axis — Normal: 0.3 m/s · Turbo: 0.8 m/s
-- **Rotation**: Left stick X-axis — Normal: 0.75 rad/s · Turbo: 2.0 rad/s
+- **Enable**: R1 (button 10)
+- **Turbo**: L1 (button 9)
+- **Linear motion**: Left stick Y-axis — Normal: 0.08 m/s · Turbo: 1.0 m/s
+- **Rotation**: Left stick X-axis — Normal: 1.0 rad/s · Turbo: 2.0 rad/s
 
 Configurable parameters in: `pizibot_teleop/params/joystick.yaml`
 
@@ -206,7 +207,7 @@ dataset/
 
 - **LiDAR**: 360 samples, 10 Hz, range 0.15–12 m
 - **Camera**: 1600×1200, 15 Hz, FOV 1.089 rad
-- **Wheels**: separation 0.273 m, diameter 0.08 m
+- **Wheels**: separation 0.29 m, diameter 0.08 m, friction `mu1`/`mu2` = 1.0
 
 ## Available Worlds
 
